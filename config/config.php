@@ -15,8 +15,10 @@ return [
     /*
      * Modules.
      */
-    'modules'  => ['category',
-        'block'],
+    'modules'  => [
+        'category',
+        'block',
+    ],
 
     /*
      * Image size.
@@ -67,8 +69,7 @@ return [
 
         'upload_folder' => '/block/category',
         'uploads'       => [],
-        'casts'         => [
-        ],
+        'casts'         => [],
         'revision'      => [],
         'perPage'       => '20',
         'search'        => [
@@ -92,7 +93,7 @@ return [
         'upload_config' => 'block.block',
         'upload_folder' => 'block/block',
         'uploads'       => [
-            'image' => [
+            'image'  => [
                 'count' => 1,
                 'type'  => 'image',
             ],

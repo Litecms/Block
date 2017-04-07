@@ -42,7 +42,6 @@ class CreateBlocksTable extends Migration
             $table->text('description')->nullable();
             $table->text('image')->nullable();
             $table->text('images')->nullable();
-            $table->enum('published', ['Yes', 'No'])->default('No')->nullable();
             $table->string('slug', 200)->nullable();
             $table->enum('status', ['show', 'hide'])->default('hide')->nullable();
             $table->integer('user_id')->nullable();

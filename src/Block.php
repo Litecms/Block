@@ -92,13 +92,14 @@ class Block
     public function display($category)
     {
 
+        $view = (View::exists("block::public.{$category}")) ? "block::public.{$category}" : "block::public.default";
+        
         $category = $this->category
             ->scopeQuery(function ($query) use ($category) {
                 return $query->with('blocks')->whereSlug($category);
             })->first();
 
         $blocks = $category->blocks;
-        $view = (View::exists("block::public.{$category}")) ? "block::public.{$category}" : "block::public.default";
         return view($view, compact('blocks', 'category'))->render();
     }
 
