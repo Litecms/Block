@@ -26,6 +26,9 @@ class BlockServiceProvider extends ServiceProvider
         // Load translation
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'block');
 
+        // Load migrations
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
         // Call pblish redources function
         $this->publishResources();
     }
@@ -85,13 +88,7 @@ class BlockServiceProvider extends ServiceProvider
         // Publish language files
         $this->publishes([__DIR__ . '/../resources/lang' => base_path('resources/lang/vendor/block')], 'lang');
 
-        // Publish migrations
-        $this->publishes([__DIR__ . '/../database/migrations/' => base_path('database/migrations')], 'migrations');
-
-        // Publish seeds
-        $this->publishes([__DIR__ . '/../database/seeds/' => base_path('database/seeds')], 'seeds');
-
         // Publish public
-        $this->publishes([__DIR__ . '/../public/' => public_path('/')], 'uploads');
+        $this->publishes([__DIR__ . '/../public/' => public_path('/')], 'public');
     }
 }

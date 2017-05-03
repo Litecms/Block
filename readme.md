@@ -25,11 +25,6 @@ And also add it to alias
 
 Use the below commands for publishing
 
-Migration and seeds
-
-    php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="migrations"
-    php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="seeds"
-
 Configuration
 
     php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="config"
