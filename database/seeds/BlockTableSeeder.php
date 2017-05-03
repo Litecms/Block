@@ -2,6 +2,7 @@
 
 namespace Litecms;
 
+use DB;
 use Illuminate\Database\Seeder;
 
 class BlockTableSeeder extends Seeder
