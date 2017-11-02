@@ -1,43 +1,41 @@
-@extends('admin::curd.index')
-@section('heading')
-<i class="fa fa-file-text-o"></i> {!! trans('block::category.name') !!} <small> {!! trans('app.manage') !!} {!! trans('block::category.names') !!}</small>
-@stop
-
-@section('title')
-{!! trans('block::category.names') !!}
-@stop
-
-@section('breadcrumb')
-<ol class="breadcrumb">
-    <li><a href="{!! trans_url('admin') !!}"><i class="fa fa-dashboard"></i> {!! trans('app.home') !!} </a></li>
-    <li class="active">{!! trans('block::category.names') !!}</li>
-</ol>
-@stop
-
-@section('entry')
-<div  id='block-category-entry'>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-file-text-o"></i> {!! trans('block::category.name') !!} <small> {!! trans('app.manage') !!} {!! trans('block::category.names') !!}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{!! trans_url('admin') !!}"><i class="fa fa-dashboard"></i> {!! trans('app.home') !!} </a></li>
+            <li class="active">{!! trans('block::category.names') !!}</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+    <div id='block-category-entry'>
+    </div>
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs primary">
+                <li class="active"><a href="#tab-pages-active" data-toggle="tab">{!! trans('block::category.names') !!}</a></li>
+            </ul>
+            <div class="tab-content">
+            <table id="block-category-list" class="table table-stripedLitecmsSERTRAITSSER AS USERMODEL data-table">
+                <thead  class="list_head">
+                    <th>{!! trans('block::category.label.name')!!}</th>
+                    <th>{!! trans('block::category.label.status')!!}</th>
+                </thead>
+                <thead  class="search_bar">
+                    <th>{!! Form::text('search[name]')->raw()!!}</th>
+                    <th>{!! Form::select('search[status]')
+                            ->options(['' => 'All', 'Hide' => 'Hide','Show' => 'Show'])
+                            ->raw()!!}</th>
+                </thead>
+            </table>
+            </div>
+        </div>
+    </section>
 </div>
-@stop
 
-@section('tools')
-@stop
-
-@section('content')
-<table id="block-category-list" class="table table-stripedLitecmsSERTRAITSSER AS USERMODEL data-table">
-    <thead  class="list_head">
-        <th>{!! trans('block::category.label.name')!!}</th>
-        <th>{!! trans('block::category.label.status')!!}</th>
-    </thead>
-    <thead  class="search_bar">
-        <th>{!! Form::text('search[name]')->raw()!!}</th>
-        <th>{!! Form::select('search[status]')
-                ->options(['' => 'All', 'Hide' => 'Hide','Show' => 'Show'])
-                ->raw()!!}</th>
-    </thead>
-</table>
-@stop
-
-@section('script')
 <script type="text/javascript">
 
 var oTable;
@@ -95,8 +93,3 @@ $(document).ready(function(){
     });
 });
 </script>
-@stop
-
-@section('style')
-@stop
-

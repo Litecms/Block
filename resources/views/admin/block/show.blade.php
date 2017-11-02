@@ -25,14 +25,9 @@
             </div>
             <div class="tab-pane" id="images">
                 <div class="row">
-                    <div class='col-md-6 col-sm-6'>
-                    <label>Image</label><br>
-                     {!!@$block->fileShow('image')!!}
-                    </div>
-                    <div class='col-md-6 col-sm-6'>
-                    <label>Images</label><br>
-                          {!!@$block->fileShow('images')!!}
-                    </div>
+                        <div class='col-lg-12 col-sm-12'>
+                            {!! $block->files('images')->editor()!!}
+                        </div>
                 </div>    
             </div>
         </div>

@@ -17,7 +17,7 @@
         <div class="tab-content clearfix">
             <div class="tab-pane active" id="details">
                 <div class="tab-pan-title">  {!! trans('app.edit') !!}  {!! trans('block::block.name') !!} [ {!!$block->name!!} ]</div>
-                @include('block::admin.block.partial.entry')
+                @include('block::admin.block.partial.entry', ['mode' => 'edit'])
             </div>
             <div class="tab-pane" id="images">
                 <div class="row">
@@ -26,10 +26,10 @@
                             {{trans('block::block.label.images') }}
                         </label>
                         <div class='col-lg-6 col-sm-12'>
-                            {!! $block->fileUpload('images')!!}
+                            {!! $block->files('images')->url($block->getUploadUrl('images'))->dropzone()!!}
                         </div>
                         <div class='col-lg-12 col-sm-12'>
-                            {!! $block->fileEdit('images')!!}
+                            {!! $block->files('images')->editor()!!}
                         </div>
                     </div>
                 </div>

@@ -16,7 +16,7 @@ return [
      * Options for select/radio/check.
      */
     'options'     => [
-        
+        'status' => ['Show' => 'Show', 'Hide' => 'Hide']
     ],
 
     /**

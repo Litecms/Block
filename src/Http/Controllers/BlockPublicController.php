@@ -16,12 +16,13 @@ class BlockController extends BaseController
      *
      * @return type
      */
-    public function __construct(BlockRepositoryInterface $block, CategoryRepositoryInterface $category)
-    {
-        $this->middleware('web');
-        $this->setupTheme(config('theme.themes.public.theme'), config('theme.themes.public.layout'));
+    public function __construct(
+        BlockRepositoryInterface    $block,
+        CategoryRepositoryInterface $category
+    ) {
+        $this->setupTheme();
         $this->repository = $block;
-        $this->category = $category;
+        $this->category   = $category;
         parent::__construct();
     }
 

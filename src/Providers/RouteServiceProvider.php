@@ -3,9 +3,10 @@
 namespace Litecms\Block\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Route;
+use Illuminate\Routing\Router;
 use Litecms\Block\Models\Block;
 use Request;
+use Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -28,17 +29,17 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        if (Request::is('*/block/category/*')) {
-            Route::bind('category', function ($id) {
-                $category = $this->app->make('Litecms\Block\Interfaces\CategoryRepositoryInterface');
-                return $category->findorNew($id);
+        if (Request::is('*/block/block/*')) {
+            Route::bind('block', function ($block) {
+                $blockrepo = $this->app->make('Litecms\Block\Interfaces\BlockRepositoryInterface');
+                return $blockrepo->findorNew($block);
             });
         }
 
-        if (Request::is('*/block/block/*')) {
-            Route::bind('block', function ($id) {
-                $block = $this->app->make('Litecms\Block\Interfaces\BlockRepositoryInterface');
-                return $block->findorNew($id);
+        if (Request::is('*/block/category/*')) {
+            Route::bind('category', function ($category) {
+                $categoryrepo = $this->app->make('Litecms\Block\Interfaces\CategoryRepositoryInterface');
+                return $categoryrepo->findorNew($category);
             });
         }
 
@@ -51,11 +52,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
+
         $this->mapWebRoutes();
-
-        // $this->mapApiRoutes();
-
-        //
     }
 
     /**
@@ -67,29 +65,17 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
+        if (request()->segment(1) == 'api' || request()->segment(2) == 'api') {
+            return;
+        }
+
         Route::group([
             'middleware' => 'web',
-            'namespace' => $this->namespace,
+            'namespace'  => $this->namespace,
+            'prefix'     => trans_setlocale(),
         ], function ($router) {
             require (__DIR__ . '/../../routes/web.php');
         });
     }
 
-    /**
-     * Define the "api" routes for the package.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
-     */
-    protected function mapApiRoutes()
-    {
-        Route::group([
-            'middleware' => 'api',
-            'namespace' => $this->namespace,
-            'prefix' => 'api',
-        ], function ($router) {
-            require (__DIR__ . '/../../routes/api.php');
-        });
-    }
 }

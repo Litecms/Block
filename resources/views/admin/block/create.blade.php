@@ -25,10 +25,10 @@
                             {{trans('block::block.label.images') }}
                         </label>
                         <div class='col-lg-6 col-sm-12'>
-                            {!! $block->fileUpload('images')!!}
+                            {!! $block->files('images')->url($block->getUploadUrl('images'))->dropzone()!!}
                         </div>
                         <div class='col-lg-12 col-sm-12'>
-                            {!! $block->fileEdit('images')!!}
+                            {!! $block->files('images')->editor()!!}
                         </div>
                     </div>
                 </div>

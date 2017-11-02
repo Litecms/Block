@@ -4,8 +4,7 @@ namespace Litecms\Block\Repositories\Presenter;
 
 use Litepie\Repository\Presenter\FractalPresenter;
 
-class BlockItemPresenter extends FractalPresenter
-{
+class BlockItemPresenter extends FractalPresenter {
 
     /**
      * Prepare data to present
