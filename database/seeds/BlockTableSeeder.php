@@ -71,7 +71,7 @@ class BlockTableSeeder extends Seeder
         $id = DB::table('menus')->insertGetId([
             'parent_id' => 1,
             'key'       => null,
-            'url'       => 'admin/block',
+            'url'       => 'admin/block/block',
             'name'      => 'Blocks',
             'icon'      => 'fa fa-square',
             'target'    => null,
