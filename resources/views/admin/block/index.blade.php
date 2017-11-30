@@ -3,10 +3,10 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <i class="fa fa-file-text-o"></i> {!! trans('block::block.name') !!} <small> {!! trans('app.manage') !!} {!! trans('block::block.names') !!}</small>
+            <i class="fa fa-square"></i> {!! trans('block::block.name') !!} <small> {!! trans('app.manage') !!} {!! trans('block::block.names') !!}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{!! trans_url('admin') !!}"><i class="fa fa-dashboard"></i> {!! trans('app.home') !!} </a></li>
+            <li><a href="{!! guard_url('/') !!}"><i class="fa fa-dashboard"></i> {!! trans('app.home') !!} </a></li>
             <li class="active">{!! trans('block::block.names') !!}</li>
         </ol>
     </section>
@@ -16,7 +16,7 @@
     </div>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-                    <li class="{!!(request('status') == '')?'active':'';!!}"><a href="{!!trans_url('admin/block/block')!!}">Blocks</a></li>
+                    <li class="{!!(request('status') == '')?'active':'';!!}"><a href="{!!guard_url('block/block')!!}">Blocks</a></li>
             </ul>
             <div class="tab-content">
                 <table id="block-block-list" class="table table-striped data-table">
@@ -42,12 +42,12 @@
 
 var oTable;
 $(document).ready(function(){
-    app.load('#block-block-entry', '{!!trans_url('admin/block/block/0')!!}');
+    app.load('#block-block-entry', '{!!guard_url('block/block/0')!!}');
     oTable = $('#block-block-list').dataTable( {
         "bProcessing": true,
         "sDom": 'R<>rt<ilp><"clear">',
         "bServerSide": true,
-        "sAjaxSource": '{!! trans_url('/admin/block/block') !!}',
+        "sAjaxSource": '{!! guard_url('block/block') !!}',
         "fnServerData" : function ( sSource, aoData, fnCallback ) {
 
             $('#block-block-list .search_bar input, #block-block-list .search_bar select').each(
@@ -81,7 +81,7 @@ $(document).ready(function(){
 
         var d = $('#block-block-list').DataTable().row( this ).data();
 
-        $('#block-block-entry').load('{!!trans_url('admin/block/block')!!}' + '/' + d.id);                                                           
+        $('#block-block-entry').load('{!!guard_url('block/block')!!}' + '/' + d.id);                                                           
     });
 
     $("#block-block-list .search_bar input, #block-block-list .search_bar select").on('keyup select', function (e) {

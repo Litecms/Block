@@ -3,10 +3,10 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <i class="fa fa-file-text-o"></i> {!! trans('block::category.name') !!} <small> {!! trans('app.manage') !!} {!! trans('block::category.names') !!}</small>
+            <i class="fa fa-square"></i> {!! trans('block::category.name') !!} <small> {!! trans('app.manage') !!} {!! trans('block::category.names') !!}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{!! trans_url('admin') !!}"><i class="fa fa-dashboard"></i> {!! trans('app.home') !!} </a></li>
+            <li><a href="{!! guard_url('/') !!}"><i class="fa fa-dashboard"></i> {!! trans('app.home') !!} </a></li>
             <li class="active">{!! trans('block::category.names') !!}</li>
         </ol>
     </section>
@@ -40,12 +40,12 @@
 
 var oTable;
 $(document).ready(function(){
-    app.load('#block-category-entry', '{!!trans_url('admin/block/category/0')!!}');
+    app.load('#block-category-entry', '{!!guard_url('block/category/0')!!}');
     oTable = $('#block-category-list').dataTable( {
         "bProcessing": true,
         "sDom": 'R<>rt<ilp><"clear">',
         "bServerSide": true,
-        "sAjaxSource": '{!! trans_url('/admin/block/category') !!}',
+        "sAjaxSource": '{!! guard_url('block/category') !!}',
         "fnServerData" : function ( sSource, aoData, fnCallback ) {
 
             $('#block-category-list .search_bar input, #block-category-list .search_bar select').each(
@@ -77,7 +77,7 @@ $(document).ready(function(){
 
         var d = $('#block-category-list').DataTable().row( this ).data();
 
-        $('#block-category-entry').load('{!!trans_url('admin/block/category')!!}' + '/' + d.id);
+        $('#block-category-entry').load('{!!guard_url('block/category')!!}' + '/' + d.id);
     });
 
     $("#block-category-list .search_bar input, #block-category-list .search_bar select").on('keyup select', function (e) {

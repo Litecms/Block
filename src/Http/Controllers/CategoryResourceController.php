@@ -164,7 +164,7 @@ class CategoryResourceController extends BaseController
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('/block/category/' . $category->getRouteKey()))
+                ->url(guard_url('block/category/' . $category->getRouteKey()))
                 ->redirect();
         }
 

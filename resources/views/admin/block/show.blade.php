@@ -3,10 +3,10 @@
         <li class="active"><a href="#details" data-toggle="tab">  {!! trans('block::block.name') !!}</a></li>
         <li><a href="#images" data-toggle="tab">Images</a></li>
         <div class="box-tools pull-right">
-            <button type="button" class="btn btn-success btn-sm" data-action='NEW' data-load-to='#block-block-entry' data-href='{{trans_url('admin/block/block/create')}}'><i class="fa fa-plus-circle"></i> New</button>
+            <button type="button" class="btn btn-success btn-sm" data-action='NEW' data-load-to='#block-block-entry' data-href='{{guard_url('block/block/create')}}'><i class="fa fa-plus-circle"></i> New</button>
             @if($block->id )
-            <button type="button" class="btn btn-primary btn-sm" data-action="EDIT" data-load-to='#block-block-entry' data-href='{{ trans_url('/admin/block/block') }}/{{$block->getRouteKey()}}/edit'><i class="fa fa-pencil-square"></i> Edit</button>
-            <button type="button" class="btn btn-danger btn-sm" data-action="DELETE" data-load-to='#block-block-entry' data-datatable='#block-block-list' data-href='{{ trans_url('/admin/block/block') }}/{{$block->getRouteKey()}}' >
+            <button type="button" class="btn btn-primary btn-sm" data-action="EDIT" data-load-to='#block-block-entry' data-href='{{ guard_url('block/block') }}/{{$block->getRouteKey()}}/edit'><i class="fa fa-pencil-square"></i> Edit</button>
+            <button type="button" class="btn btn-danger btn-sm" data-action="DELETE" data-load-to='#block-block-entry' data-datatable='#block-block-list' data-href='{{ guard_url('block/block') }}/{{$block->getRouteKey()}}' >
             <i class="fa fa-times-circle"></i> Delete
             </button>
             @endif
@@ -17,7 +17,7 @@
     ->id('block-block-show')
     ->method('POST')
     ->files('true')
-    ->action(trans_url('admin/block/block'))!!}
+    ->action(guard_url('block/block'))!!}
        <div class="tab-content clearfix">
             <div class="tab-pane active" id="details">
                 <div class="tab-pan-title">  {!! trans('app.view') !!}  {!! trans('block::block.name') !!} [ {!!$block->name!!} ] </div>
