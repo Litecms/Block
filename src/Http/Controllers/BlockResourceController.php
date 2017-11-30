@@ -89,7 +89,7 @@ class BlockResourceController extends BaseController
     {
 
         $block = $this->repository->newInstance([]);
-        $this->response->title(trans('app.new') . ' ' . trans('block::block.name')) 
+        return $this->response->title(trans('app.new') . ' ' . trans('block::block.name')) 
             ->view('block::admin.block.create') 
             ->data(compact('block'))
             ->output();
@@ -113,13 +113,13 @@ class BlockResourceController extends BaseController
             return $this->response->message(trans('messages.success.created', ['Module' => trans('block::block.name')]))
                 ->code(204)
                 ->status('success')
-                ->url(trans_url(guard_url('/block/block/' . $block->getRouteKey())))
+                ->url(guard_url('block/block/' . $block->getRouteKey()))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(trans_url(guard_url('/block/block')))
+                ->url(guard_url('block/block'))
                 ->redirect();
         }
 
@@ -158,13 +158,13 @@ class BlockResourceController extends BaseController
             return $this->response->message(trans('messages.success.updated', ['Module' => trans('block::block.name')]))
                 ->code(204)
                 ->status('success')
-                ->url(trans_url(guard_url('/block/block/' . $block->getRouteKey())))
+                ->url(guard_url('block/block/' . $block->getRouteKey()))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('/block/block/' . $block->getRouteKey()))
+                ->url(guard_url('block/block/' . $block->getRouteKey()))
                 ->redirect();
         }
 
@@ -185,7 +185,7 @@ class BlockResourceController extends BaseController
             return $this->response->message(trans('messages.success.deleted', ['Module' => trans('block::block.name')]))
                 ->code(202)
                 ->status('success')
-                ->url(trans_url(guard_url('/block/block')))
+                ->url(guard_url('block/block'))
                 ->redirect();
 
         } catch (Exception $e) {
@@ -193,7 +193,7 @@ class BlockResourceController extends BaseController
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(trans_url(guard_url('/block/block/' . $block->getRouteKey())))
+                ->url(guard_url('block/block/' . $block->getRouteKey()))
                 ->redirect();
         }
 
@@ -220,7 +220,7 @@ class BlockResourceController extends BaseController
             return $this->response->message(trans('messages.success.deleted', ['Module' => trans('block::block.name')]))
                 ->status("success")
                 ->code(202)
-                ->url(trans_url(guard_url('/block/block')))
+                ->url(guard_url('block/block'))
                 ->redirect();
 
         } catch (Exception $e) {
@@ -228,7 +228,7 @@ class BlockResourceController extends BaseController
             return $this->response->message($e->getMessage())
                 ->status("error")
                 ->code(400)
-                ->url(trans_url(guard_url('/block/block')))
+                ->url(guard_url('block/block'))
                 ->redirect();
         }
 
@@ -250,7 +250,7 @@ class BlockResourceController extends BaseController
             return $this->response->message(trans('messages.success.restore', ['Module' => trans('block::block.name')]))
                 ->status("success")
                 ->code(202)
-                ->url(trans_url(guard_url('/block/block')))
+                ->url(guard_url('block/block'))
                 ->redirect();
 
         } catch (Exception $e) {
@@ -258,7 +258,7 @@ class BlockResourceController extends BaseController
             return $this->response->message($e->getMessage())
                 ->status("error")
                 ->code(400)
-                ->url(trans_url(guard_url('/block/block/')))
+                ->url(guard_url('block/block/'))
                 ->redirect();
         }
 

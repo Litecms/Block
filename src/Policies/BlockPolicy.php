@@ -21,11 +21,11 @@ class BlockPolicy
     public function view(User $user, Block $block)
     {
 
-        if ($user->canDo('block.block.view') && $user->is('admin')) {
+        if ($user->canDo('block.block.view') && $user->isAdmin()) {
             return true;
         }
 
-        return $user->id === $block->user_id;
+        return $user->id == $block->user_id;
     }
 
     /**
@@ -52,11 +52,11 @@ class BlockPolicy
     public function update(User $user, Block $block)
     {
 
-        if ($user->canDo('block.block.update') && $user->is('admin')) {
+        if ($user->canDo('block.block.update') && $user->isAdmin()) {
             return true;
         }
 
-        return $user->id === $block->user_id;
+        return $user->id == $block->user_id;
     }
 
     /**
@@ -70,11 +70,11 @@ class BlockPolicy
     public function destroy(User $user, Block $block)
     {
 
-        if ($user->canDo('block.block.delete') && $user->is('admin')) {
+        if ($user->canDo('block.block.delete') && $user->isAdmin()) {
             return true;
         }
 
-        return $user->id === $block->user_id;
+        return $user->id == $block->user_id;
     }
 
     /**
@@ -88,7 +88,7 @@ class BlockPolicy
     public function before($user, $ability)
     {
 
-        if ($user->isSuperUser()) {
+        if ($user->isSuperuser()) {
             return true;
         }
 

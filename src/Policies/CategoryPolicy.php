@@ -21,11 +21,11 @@ class CategoryPolicy
     public function view(User $user, Category $category)
     {
 
-        if ($user->canDo('block.category.view') && $user->is('admin')) {
+        if ($user->canDo('block.category.view') && $user->isAdmin()) {
             return true;
         }
 
-        return $user->id === $category->user_id;
+        return $user->id == $category->user_id;
     }
 
     /**
@@ -52,11 +52,11 @@ class CategoryPolicy
     public function update(User $user, Category $category)
     {
 
-        if ($user->canDo('block.category.update') && $user->is('admin')) {
+        if ($user->canDo('block.category.update') && $user->isAdmin()) {
             return true;
         }
 
-        return $user->id === $category->user_id;
+        return $user->id == $category->user_id;
     }
 
     /**
@@ -70,11 +70,11 @@ class CategoryPolicy
     public function destroy(User $user, Category $category)
     {
 
-        if ($user->canDo('block.category.delete') && $user->is('admin')) {
+        if ($user->canDo('block.category.delete') && $user->isAdmin()) {
             return true;
         }
 
-        return $user->id === $category->user_id;
+        return $user->id == $category->user_id;
     }
 
     /**
@@ -88,7 +88,7 @@ class CategoryPolicy
     public function before($user, $ability)
     {
 
-        if ($user->isSuperUser()) {
+        if ($user->isSuperuser()) {
             return true;
         }
 
