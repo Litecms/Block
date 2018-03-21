@@ -11,13 +11,13 @@ class BlockTableSeeder extends Seeder
     {
         DB::table('blocks')->insert([
             ['category_id'  => '1',
-                'name'          => 'Powered by Laravel 5.3',
+                'name'          => 'Powered by Laravel 5',
                 'url'           => '',
-                'icon'          => 'ion ion-social-github-outline',
+                'icon'          => 'ti-stats-up',
                 'order'         => '0',
-                'description'   => 'We have tried to make use of all features of Laravel 5.2 which help you to develop the website with all resources available online.​ ',
+                'description'   => 'We have tried to make use of all features of Laravel 5 which help you to develop the website with all resources available online.​ ',
                 'image'         => '',
-                'slug'          => 'powered-by-laravel-5-3',
+                'slug'          => 'powered-by-laravel-5-5',
                 'status'        => 'show',
                 'user_id'       => '1',
                 'user_type'     => 'App\\User',
@@ -26,7 +26,7 @@ class BlockTableSeeder extends Seeder
             ['category_id'  => '1',
                 'name'          => 'Configure to your project',
                 'url'           => '',
-                'icon'          => 'ion ion-ios-gear-outline',
+                'icon'          => 'ti-ruler-pencil',
                 'order'         => '0',
                 'description'   => 'Lavalite helps you to configure your Laravel projects easily. It acts as a bootstrapper for your Laravel Content Management System.',
                 'image'         => '',
@@ -39,7 +39,7 @@ class BlockTableSeeder extends Seeder
             ['category_id'  => '1',
                 'name'          => 'Online package builder',
                 'url'           => '',
-                'icon'          => 'ion ion-ios-checkmark-outline',
+                'icon'          => 'ti-package',
                 'order'         => '0',
                 'description'   => 'The online package builder helps you to build Lavalite packages easily, The downloaded package with basic required files help you to finish your projects quickly.',
                 'image'         => '',
@@ -57,7 +57,7 @@ class BlockTableSeeder extends Seeder
                 'name'          => 'Features',
                 'slug'          => 'features',
                 'title'         => 'Packed with features you can\'t live without.',
-                'details'       => 'Visit our <a href="https://github.com/LavaLite/cms/wiki">documentation</a> for more information.',
+                'details'       => 'Visit our <a href="https://lavalite.org/docs" target="_blank">documentation</a> for more information.',
                 'status'        => 'show',
                 'user_type'     => 'App\\User',
                 'user_id'       => '1',
@@ -77,29 +77,6 @@ class BlockTableSeeder extends Seeder
             'target'    => null,
             'order'     => 100,
             'status'    => 1,
-        ]);
-
-        DB::table('menus')->insert([
-            [
-                'parent_id' => $id,
-                'key'       => null,
-                'url'       => 'admin/block/block',
-                'name'      => 'Blocks',
-                'icon'      => 'fa fa-square',
-                'target'    => null,
-                'order'     => 101,
-                'status'    => 1,
-            ],
-            [
-                'parent_id' => $id,
-                'key'       => null,
-                'url'       => 'admin/block/category',
-                'name'      => 'Categories',
-                'icon'      => 'fa fa-bars',
-                'target'    => null,
-                'order'     => 102,
-                'status'    => 1,
-            ],
         ]);
 
         DB::table('permissions')->insert([

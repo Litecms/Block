@@ -16,7 +16,8 @@
     </div>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-                    <li class="{!!(request('status') == '')?'active':'';!!}"><a href="{!!guard_url('block/block')!!}">Blocks</a></li>
+                    <li class="active"><a href="{!!guard_url('block/block')!!}">Blocks</a></li>
+                    <li><a href="{!!guard_url('block/category')!!}">Categories</a></li>
             </ul>
             <div class="tab-content">
                 <table id="block-block-list" class="table table-striped data-table">

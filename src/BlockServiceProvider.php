@@ -40,6 +40,8 @@ class BlockServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'litecms.block');
+        
         // Bind facade
         $this->app->bind('block', function ($app) {
             return $this->app->make('Litecms\Block\Block');

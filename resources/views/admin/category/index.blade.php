@@ -16,7 +16,8 @@
     </div>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs primary">
-                <li class="active"><a href="#tab-pages-active" data-toggle="tab">{!! trans('block::category.names') !!}</a></li>
+                    <li><a href="{!!guard_url('block/block')!!}">Blocks</a></li>
+                    <li class="active"><a href="{!!guard_url('block/category')!!}">Categories</a></li>
             </ul>
             <div class="tab-content">
             <table id="block-category-list" class="table table-stripedLitecmsSERTRAITSSER AS USERMODEL data-table">
