@@ -26,7 +26,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Litecms\\Block\\Providers\\BlockServiceProvider"
+                "Litecms\\Block\\BlockServiceProvider"
             ],
             "aliases": {
                 "Block"       : "Litecms\\Block\\Facades"
