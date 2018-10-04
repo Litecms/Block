@@ -12,15 +12,25 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0",
-        "composer/installers": "~1.4"
+        "php": "^7.1.3",
+        "composer/installers": "~1.6"
     },
     "autoload": {
         "classmap": [
             "database/seeds"
         ],
-        "psr-4": { 
-            "Litecms\\Block\\": "/src" 
+        "psr-4": {
+            "Litecms\\Block\\": "/src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Litecms\\Block\\Providers\\BlockServiceProvider"
+            ],
+            "aliases": {
+                "Block"       : "Litecms\\Block\\Facades"
+            }
         }
     }
 }
