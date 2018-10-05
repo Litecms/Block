@@ -29,7 +29,7 @@
                 "Litecms\\Block\\BlockServiceProvider"
             ],
             "aliases": {
-                "Block"       : "Litecms\\Block\\Facades"
+                "Block"       : "Litecms\\Block\\Facades\\Block"
             }
         }
     }
