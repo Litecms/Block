@@ -50,7 +50,7 @@ class BlockResourceController extends BaseController
         $blocks = $this->repository->paginate();
 
         return $this->response->title(trans('block::block.names'))
-            ->view('block::admin.block.index')
+            ->view('block::block.index')
             ->data(compact('blocks'))
             ->output();
     }
@@ -90,7 +90,7 @@ class BlockResourceController extends BaseController
 
         $block = $this->repository->newInstance([]);
         return $this->response->title(trans('app.new') . ' ' . trans('block::block.name')) 
-            ->view('block::admin.block.create') 
+            ->view('block::block.create') 
             ->data(compact('block'))
             ->output();
     }
@@ -136,7 +136,7 @@ class BlockResourceController extends BaseController
     public function edit(BlockRequest $request, Block $block)
     {
         return $this->response->title(trans('app.edit') . ' ' . trans('block::block.name'))
-            ->view('block::admin.block.edit')
+            ->view('block::block.edit')
             ->data(compact('block'))
             ->output();
     }

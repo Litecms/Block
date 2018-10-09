@@ -50,7 +50,7 @@ class CategoryResourceController extends BaseController
         $categories = $this->repository->paginate();
 
         return $this->response->title(trans('block::category.names'))
-            ->view('block::admin.category.index')
+            ->view('block::category.index')
             ->data(compact('categories'))
             ->output();
     }
@@ -67,9 +67,9 @@ class CategoryResourceController extends BaseController
     {
 
         if ($category->exists) {
-            $view = 'block::admin.category.show';
+            $view = 'block::category.show';
         } else {
-            $view = 'block::admin.category.new';
+            $view = 'block::category.new';
         }
 
         return $this->response->title(trans('app.view') . ' ' . trans('block::category.name'))
@@ -90,7 +90,7 @@ class CategoryResourceController extends BaseController
 
         $category = $this->repository->newInstance([]);
         return $this->response->title(trans('app.new') . ' ' . trans('block::category.name')) 
-            ->view('block::admin.category.create') 
+            ->view('block::category.create') 
             ->data(compact('category'))
             ->output();
     }
@@ -136,7 +136,7 @@ class CategoryResourceController extends BaseController
     public function edit(CategoryRequest $request, Category $category)
     {
         return $this->response->title(trans('app.edit') . ' ' . trans('block::category.name'))
-            ->view('block::admin.category.edit')
+            ->view('block::category.edit')
             ->data(compact('category'))
             ->output();
     }
