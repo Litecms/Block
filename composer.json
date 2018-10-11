@@ -12,8 +12,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0",
-        "composer/installers": "~1.4"
+        "php": "^7.1.3"
     },
     "autoload": {
         "classmap": [
@@ -26,10 +25,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Litecms\\Blog\\Providers\\BlogServiceProvider"
+                "Litecms\\Block\\Providers\\BlockServiceProvider"
             ],
             "aliases": {
-                "Blog"       : "Litecms\\Blog\\Facades\\Blog"
+                "Block"       : "Litecms\\Block\\Facades\\Block"
             }
         }
     },
