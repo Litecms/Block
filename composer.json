@@ -22,5 +22,16 @@
         "psr-4": { 
             "Litecms\\Block\\": "/src" 
         }
-    }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Litecms\\Blog\\Providers\\BlogServiceProvider"
+            ],
+            "aliases": {
+                "Blog"       : "Litecms\\Blog\\Facades\\Blog"
+            }
+        }
+    },
+    "minimum-stability": "dev"
 }
