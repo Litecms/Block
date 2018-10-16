@@ -92,7 +92,7 @@ class Block
     public function display($category)
     {
 
-        $view = (View::exists("block::public.{$category}")) ? "block::public.{$category}" : "block::public.default";
+        $view = (View::exists("block::{$category}")) ? "block::{$category}" : "block::default";
         
         $category = $this->category
             ->scopeQuery(function ($query) use ($category) {

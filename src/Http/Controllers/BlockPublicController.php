@@ -46,7 +46,7 @@ class BlockController extends BaseController
                 return $query->orderBy('name', 'Asc');
             })->all();
 
-        return $this->theme->of('block::public.block.index', compact('blocks', 'categories'))->render();
+        return $this->theme->of('block::block.index', compact('blocks', 'categories'))->render();
     }
 
     /**
@@ -66,7 +66,7 @@ class BlockController extends BaseController
                 return $query->orderBy('name', 'Asc');
             })->all();
 
-        return $this->theme->of('block::public.block.show', compact('block', 'categories'))->render();
+        return $this->theme->of('block::block.show', compact('block', 'categories'))->render();
     }
 
     /**
@@ -85,6 +85,6 @@ class BlockController extends BaseController
             ->scopeQuery(function ($query) {
                 return $query->orderBy('name', 'Asc');
             })->all();
-        return $this->theme->of('block::public.block.category', compact('category', 'categories'))->render();
+        return $this->theme->of('block::block.category', compact('category', 'categories'))->render();
     }
 }
