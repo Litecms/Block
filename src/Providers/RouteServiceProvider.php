@@ -65,10 +65,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        if (request()->segment(1) == 'api' || request()->segment(2) == 'api') {
-            return;
-        }
-
         Route::group([
             'middleware' => 'web',
             'namespace'  => $this->namespace,

@@ -3,6 +3,7 @@
 namespace Litecms\Block\Http\Requests;
 
 use App\Http\Requests\Request as FormRequest;
+use Litecms\Block\Models\Category;
 
 class CategoryRequest extends FormRequest
 {
@@ -17,7 +18,7 @@ class CategoryRequest extends FormRequest
 
         if (is_null($this->model)) {
             // Determine if the user is authorized to access category module,
-            return $this->formRequest->user($this->guard)->canDo('block.category.view');
+            return $this->formRequest->user()->can('view', Category::class);
         }
 
         if ($this->isWorkflow()) {

@@ -50,7 +50,7 @@ class CategoryResourceController extends BaseController
         $categories = $this->repository->paginate();
 
         return $this->response->setMetaTitle(trans('block::category.names'))
-            ->view('block::category.index')
+            ->view('block::admin.category.index')
             ->data(compact('categories'))
             ->output();
     }
@@ -67,9 +67,9 @@ class CategoryResourceController extends BaseController
     {
 
         if ($category->exists) {
-            $view = 'block::category.show';
+            $view = 'block::admin.category.show';
         } else {
-            $view = 'block::category.new';
+            $view = 'block::admin.category.new';
         }
 
         return $this->response->setMetaTitle(trans('app.view') . ' ' . trans('block::category.name'))
@@ -90,7 +90,7 @@ class CategoryResourceController extends BaseController
 
         $category = $this->repository->newInstance([]);
         return $this->response->setMetaTitle(trans('app.new') . ' ' . trans('block::category.name')) 
-            ->view('block::category.create') 
+            ->view('block::admin.category.create') 
             ->data(compact('category'))
             ->output();
     }
@@ -136,7 +136,7 @@ class CategoryResourceController extends BaseController
     public function edit(CategoryRequest $request, Category $category)
     {
         return $this->response->setMetaTitle(trans('app.edit') . ' ' . trans('block::category.name'))
-            ->view('block::category.edit')
+            ->view('block::admin.category.edit')
             ->data(compact('category'))
             ->output();
     }

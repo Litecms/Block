@@ -50,7 +50,7 @@ class BlockResourceController extends BaseController
         $blocks = $this->repository->paginate();
 
         return $this->response->setMetaTitle(trans('block::block.names'))
-            ->view('block::block.index')
+            ->view('block::admin.block.index')
             ->data(compact('blocks'))
             ->output();
     }
@@ -90,7 +90,7 @@ class BlockResourceController extends BaseController
 
         $block = $this->repository->newInstance([]);
         return $this->response->setMetaTitle(trans('app.new') . ' ' . trans('block::block.name')) 
-            ->view('block::block.create') 
+            ->view('block::admin.block.create') 
             ->data(compact('block'))
             ->output();
     }
@@ -136,7 +136,7 @@ class BlockResourceController extends BaseController
     public function edit(BlockRequest $request, Block $block)
     {
         return $this->response->setMetaTitle(trans('app.edit') . ' ' . trans('block::block.name'))
-            ->view('block::block.edit')
+            ->view('block::admin.block.edit')
             ->data(compact('block'))
             ->output();
     }

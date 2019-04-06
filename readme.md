@@ -1,38 +1,47 @@
-Laravel package that provides content block management facility for lavalite CMS.
+This is a Litecms 5 package that provides block management facility for litecms framework.
 
 ## Installation
 
-Require this package with composer. 
+Begin by installing this package through Composer. Edit your project's `composer.json` file to require `litecms/block`.
 
-    composer require litecms/block
+    "litecms/block": "dev-master"
 
-Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
+Next, update Composer from the Terminal:
+
+    composer update
+
+Once this operation completes execute below cammnds in command line to finalize installation.
+
+```php
+Litecms\Block\Providers\BlockServiceProvider::class,
+
+```
+
+And also add it to alias
+
+```php
+'Block'  => Litecms\Block\Facades\Block::class,
+```
+
+Use the below commands for publishing
+
+Configuration
+
+    php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="config"
+
+Language
+
+    php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="lang"
+
+Views files
+
+    php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="view"
+
+Public folders
+   
+	php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="public"
 
 
-## Publishing
+## Usage
 
-**Configuration**
 
-    php artisan vendor:publish --provider="Litecms\Block\BlockServiceProvider" --tag="config"
-
-**Language**
-
-    php artisan vendor:publish --provider="Litecms\Block\BlockServiceProvider" --tag="lang"
-
-**Files**
-
-    php artisan vendor:publish --provider="Litecms\Block\BlockServiceProvider" --tag="storage"
-
-### Views
-
-Publish views to resources\views\vendor directory
-
-    php artisan vendor:publish --provider="Litecms\Block\BlockServiceProvider" --tag="view"
-
-Publishes admin view to admin theme
-
-    php artisan theme:publish --provider="Litecms\Block\BlockServiceProvider" --view="admin" --theme="admin"
-
-Publishes public view to public theme
-
-    php artisan theme:publish --provider="Litecms\Block\BlockServiceProvider" --view="public" --theme="public"
