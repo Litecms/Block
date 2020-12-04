@@ -2,10 +2,10 @@
 
 namespace Litecms\Block\Http\Requests;
 
-use App\Http\Requests\Request as FormRequest;
+use Litepie\Http\Request\AbstractRequest;
 use Litecms\Block\Models\Block;
 
-class BlockRequest extends FormRequest
+class BlockRequest extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +18,7 @@ class BlockRequest extends FormRequest
 
         if (is_null($this->model)) {
             // Determine if the user is authorized to access block module,
-            return $this->formRequest->user()->can('view', Block::class);
+            return $this->formRequest->user()->can('view', app(Block::class));
         }
 
         if ($this->isWorkflow()) {

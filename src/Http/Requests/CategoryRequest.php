@@ -2,10 +2,10 @@
 
 namespace Litecms\Block\Http\Requests;
 
-use App\Http\Requests\Request as FormRequest;
+use Litepie\Http\Request\AbstractRequest;
 use Litecms\Block\Models\Category;
 
-class CategoryRequest extends FormRequest
+class CategoryRequest extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.

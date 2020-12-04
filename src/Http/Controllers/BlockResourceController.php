@@ -2,7 +2,7 @@
 
 namespace Litecms\Block\Http\Controllers;
 
-use App\Http\Controllers\ResourceController as BaseController;
+use Litepie\Http\Controllers\ResourceController;
 use Litecms\Block\Http\Requests\BlockRequest;
 use Litecms\Block\Interfaces\BlockRepositoryInterface;
 use Litecms\Block\Models\Block;
@@ -10,7 +10,7 @@ use Litecms\Block\Models\Block;
 /**
  * Resource controller class for block.
  */
-class BlockResourceController extends BaseController
+class BlockResourceController extends ResourceController
 {
 
     /**
@@ -36,23 +36,36 @@ class BlockResourceController extends BaseController
      */
     public function index(BlockRequest $request)
     {
-
-        if ($this->response->typeIs('json')) {
-            $pageLimit = $request->input('pageLimit');
-            $data      = $this->repository
-                ->setPresenter(\Litecms\Block\Repositories\Presenter\BlockListPresenter::class)
-                ->getDataTable($pageLimit);
-            return $this->response
-                ->data($data)
-                ->output();
+        $pageLimit = $request->input('pageLimit', 10);
+        $data = $this->repository
+            ->setPresenter(\Litecms\Block\Repositories\Presenter\BlockListPresenter::class)
+            ->paginate($pageLimit);
+        extract($data);
+        $view = 'block::block.index';
+        if ($request->ajax()) {
+            $view = 'block::block.more';
         }
-
-        $blocks = $this->repository->paginate();
-
         return $this->response->setMetaTitle(trans('block::block.names'))
-            ->view('block::admin.block.index')
-            ->data(compact('blocks'))
+            ->view($view)
+            ->data(compact('data', 'meta'))
             ->output();
+
+        // if ($this->response->typeIs('json')) {
+        //     $pageLimit = $request->input('pageLimit');
+        //     $data      = $this->repository
+        //         ->setPresenter(\Litecms\Block\Repositories\Presenter\BlockListPresenter::class)
+        //         ->getDataTable($pageLimit);
+        //     return $this->response
+        //         ->data($data)
+        //         ->output();
+        // }
+
+        // $blocks = $this->repository->paginate();
+
+        // return $this->response->setMetaTitle(trans('block::block.names'))
+        //     ->view('block::block.index')
+        //     ->data(compact('blocks'))
+        //     ->output();
     }
 
     /**
@@ -67,9 +80,9 @@ class BlockResourceController extends BaseController
     {
 
         if ($block->exists) {
-            $view = 'block::admin.block.show';
+            $view = 'block::block.show';
         } else {
-            $view = 'block::admin.block.new';
+            $view = 'block::block.new';
         }
 
         return $this->response->setMetaTitle(trans('app.view') . ' ' . trans('block::block.name'))
@@ -90,7 +103,7 @@ class BlockResourceController extends BaseController
 
         $block = $this->repository->newInstance([]);
         return $this->response->setMetaTitle(trans('app.new') . ' ' . trans('block::block.name')) 
-            ->view('block::admin.block.create') 
+            ->view('block::block.create') 
             ->data(compact('block'))
             ->output();
     }
@@ -136,7 +149,7 @@ class BlockResourceController extends BaseController
     public function edit(BlockRequest $request, Block $block)
     {
         return $this->response->setMetaTitle(trans('app.edit') . ' ' . trans('block::block.name'))
-            ->view('block::admin.block.edit')
+            ->view('block::block.edit')
             ->data(compact('block'))
             ->output();
     }
@@ -185,7 +198,7 @@ class BlockResourceController extends BaseController
             return $this->response->message(trans('messages.success.deleted', ['Module' => trans('block::block.name')]))
                 ->code(202)
                 ->status('success')
-                ->url(guard_url('block/block'))
+                ->url(guard_url('block/block/'. $block->getRouteKey()))
                 ->redirect();
 
         } catch (Exception $e) {

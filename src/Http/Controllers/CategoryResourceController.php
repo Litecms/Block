@@ -2,7 +2,7 @@
 
 namespace Litecms\Block\Http\Controllers;
 
-use App\Http\Controllers\ResourceController as BaseController;
+use Litepie\Http\Controllers\ResourceController;
 use Litecms\Block\Http\Requests\CategoryRequest;
 use Litecms\Block\Interfaces\CategoryRepositoryInterface;
 use Litecms\Block\Models\Category;
@@ -10,7 +10,7 @@ use Litecms\Block\Models\Category;
 /**
  * Resource controller class for category.
  */
-class CategoryResourceController extends BaseController
+class CategoryResourceController extends ResourceController
 {
 
     /**
@@ -36,22 +36,18 @@ class CategoryResourceController extends BaseController
      */
     public function index(CategoryRequest $request)
     {
-
-        if ($this->response->typeIs('json')) {
-            $pageLimit = $request->input('pageLimit');
-            $data      = $this->repository
-                ->setPresenter(\Litecms\Block\Repositories\Presenter\CategoryListPresenter::class)
-                ->getDataTable($pageLimit);
-            return $this->response
-                ->data($data)
-                ->output();
+        $pageLimit = $request->input('pageLimit', 10);
+        $data = $this->repository
+            ->setPresenter(\Litecms\Block\Repositories\Presenter\CategoryListPresenter::class)
+            ->paginate($pageLimit);
+        extract($data);
+        $view = 'block::category.index';
+        if ($request->ajax()) {
+            $view = 'block::category.more';
         }
-
-        $categories = $this->repository->paginate();
-
         return $this->response->setMetaTitle(trans('block::category.names'))
-            ->view('block::admin.category.index')
-            ->data(compact('categories'))
+            ->view($view)
+            ->data(compact('data', 'meta'))
             ->output();
     }
 
@@ -67,9 +63,9 @@ class CategoryResourceController extends BaseController
     {
 
         if ($category->exists) {
-            $view = 'block::admin.category.show';
+            $view = 'block::category.show';
         } else {
-            $view = 'block::admin.category.new';
+            $view = 'block::category.new';
         }
 
         return $this->response->setMetaTitle(trans('app.view') . ' ' . trans('block::category.name'))
@@ -90,7 +86,7 @@ class CategoryResourceController extends BaseController
 
         $category = $this->repository->newInstance([]);
         return $this->response->setMetaTitle(trans('app.new') . ' ' . trans('block::category.name')) 
-            ->view('block::admin.category.create') 
+            ->view('block::category.create') 
             ->data(compact('category'))
             ->output();
     }
@@ -136,7 +132,7 @@ class CategoryResourceController extends BaseController
     public function edit(CategoryRequest $request, Category $category)
     {
         return $this->response->setMetaTitle(trans('app.edit') . ' ' . trans('block::category.name'))
-            ->view('block::admin.category.edit')
+            ->view('block::category.edit')
             ->data(compact('category'))
             ->output();
     }
@@ -185,7 +181,7 @@ class CategoryResourceController extends BaseController
             return $this->response->message(trans('messages.success.deleted', ['Module' => trans('block::category.name')]))
                 ->code(202)
                 ->status('success')
-                ->url(guard_url('block/category'))
+                ->url(guard_url('block/category/' . $category->getRouteKey()))
                 ->redirect();
 
         } catch (Exception $e) {

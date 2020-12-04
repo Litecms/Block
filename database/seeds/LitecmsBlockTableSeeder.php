@@ -1,16 +1,15 @@
 <?php
 
-namespace Litecms;
 
-use DB;
 use Illuminate\Database\Seeder;
 
-class BlockTableSeeder extends Seeder
+class LitecmsBlockTableSeeder extends Seeder
 {
     public function run()
     {
         DB::table('blocks')->insert([
-            ['category_id'  => '1',
+            [
+                'category_id'  => '1',
                 'name'          => 'Powered by Laravel',
                 'url'           => '',
                 'icon'          => 'fab fa-laravel',
@@ -23,7 +22,8 @@ class BlockTableSeeder extends Seeder
                 'user_type'     => 'App\\User',
                 'upload_folder' => '2016/07/21/104902202',
             ],
-            ['category_id'  => '1',
+            [
+                'category_id'  => '1',
                 'name'          => 'Configure to your project',
                 'url'           => '',
                 'icon'          => 'fas fa-sliders-h',
@@ -36,7 +36,8 @@ class BlockTableSeeder extends Seeder
                 'user_type'     => 'App\\User',
                 'upload_folder' => '2016/07/21/104854884',
             ],
-            ['category_id'  => '1',
+            [
+                'category_id'  => '1',
                 'name'          => 'Online package builder',
                 'url'           => '',
                 'icon'          => 'fas fa-box',
@@ -73,7 +74,7 @@ class BlockTableSeeder extends Seeder
             'key'       => null,
             'url'       => 'admin/block/block',
             'name'      => 'Blocks',
-            'icon'      => 'fa fa-square',
+            'icon'      => 'las fa-th-large',
             'target'    => null,
             'order'     => 100,
             'status'    => 1,
@@ -125,7 +126,6 @@ class BlockTableSeeder extends Seeder
         'value'    => 'Some value',
         'type'     => 'Default',
         ],
-         */
-        ]);
+         */]);
     }
 }
