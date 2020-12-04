@@ -2,7 +2,7 @@
 
 namespace Litecms\Block\Policies;
 
-use App\User;
+use Litepie\User\Contracts\UserPolicy;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Litecms\Block\Models\Block;
 
@@ -13,12 +13,12 @@ class BlockPolicy
     /**
      * Determine if the given user can view the block.
      *
-     * @param User $user
+     * @param UserPolicy $user
      * @param Block $block
      *
      * @return bool
      */
-    public function view(User $user, Block $block)
+    public function view(UserPolicy $user, Block $block)
     {
 
         if ($user->canDo('block.block.view') && $user->isAdmin()) {
@@ -31,12 +31,12 @@ class BlockPolicy
     /**
      * Determine if the given user can create a block.
      *
-     * @param User $user
+     * @param UserPolicy $user
      * @param Block $block
      *
      * @return bool
      */
-    public function create(User $user)
+    public function create(UserPolicy $user)
     {
         return $user->canDo('block.block.create');
     }
@@ -44,12 +44,12 @@ class BlockPolicy
     /**
      * Determine if the given user can update the given block.
      *
-     * @param User $user
+     * @param UserPolicy $user
      * @param Block $block
      *
      * @return bool
      */
-    public function update(User $user, Block $block)
+    public function update(UserPolicy $user, Block $block)
     {
 
         if ($user->canDo('block.block.update') && $user->isAdmin()) {
@@ -62,12 +62,12 @@ class BlockPolicy
     /**
      * Determine if the given user can delete the given block.
      *
-     * @param User $user
+     * @param UserPolicy $user
      * @param Block $block
      *
      * @return bool
      */
-    public function destroy(User $user, Block $block)
+    public function destroy(UserPolicy $user, Block $block)
     {
 
         if ($user->canDo('block.block.delete') && $user->isAdmin()) {

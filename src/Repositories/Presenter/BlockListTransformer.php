@@ -10,7 +10,7 @@ class BlockListTransformer extends TransformerAbstract
     {
         return [
             'id'          => $block->getRouteKey(),
-            'category_id' => $block->category->name,
+            'category_id' => $block->category['name'],
             'name'        => $block->name,
             'url'         => $block->url,
             'description' => $block->description,
