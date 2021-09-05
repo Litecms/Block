@@ -2,31 +2,33 @@
 
 namespace Litecms\Block\Http\Controllers;
 
-use Litepie\Http\Controllers\ResourceController;
+use Exception;
+use Litepie\Http\Controllers\ResourceController as BaseController;
+use Litepie\Repository\Filter\RequestFilter;
+use Litecms\Block\Forms\Category as CategoryForm;
 use Litecms\Block\Http\Requests\CategoryRequest;
 use Litecms\Block\Interfaces\CategoryRepositoryInterface;
-use Litecms\Block\Models\Category;
+use Litecms\Block\Repositories\Eloquent\Filters\CategoryResourceFilter;
+use Litecms\Block\Repositories\Eloquent\Presenters\CategoryListPresenter;
 
 /**
  * Resource controller class for category.
  */
-class CategoryResourceController extends ResourceController
+class CategoryResourceController extends BaseController
 {
 
     /**
      * Initialize category resource controller.
      *
-     * @param type CategoryRepositoryInterface $category
      *
      * @return null
      */
     public function __construct(CategoryRepositoryInterface $category)
     {
         parent::__construct();
+        $this->form = CategoryForm::setAttributes()->toArray();
+        $this->modules = $this->modules(config('litecms.block.modules'), 'block', guard_url('block'));
         $this->repository = $category;
-        $this->repository
-            ->pushCriteria(\Litepie\Repository\Criteria\RequestCriteria::class)
-            ->pushCriteria(\Litecms\Block\Repositories\Criteria\CategoryResourceCriteria::class);
     }
 
     /**
@@ -36,18 +38,23 @@ class CategoryResourceController extends ResourceController
      */
     public function index(CategoryRequest $request)
     {
-        $pageLimit = $request->input('pageLimit', 10);
+
+        $pageLimit = $request->input('pageLimit', config('database.pagination.limit'));
         $data = $this->repository
-            ->setPresenter(\Litecms\Block\Repositories\Presenter\CategoryListPresenter::class)
-            ->paginate($pageLimit);
+            ->pushFilter(RequestFilter::class)
+            ->pushFilter(CategoryResourceFilter::class)
+            ->setPresenter(CategoryListPresenter::class)
+            ->simplePaginate($pageLimit)
+            // ->withQueryString()
+            ->toArray();
+
         extract($data);
-        $view = 'block::category.index';
-        if ($request->ajax()) {
-            $view = 'block::category.more';
-        }
+        $form = $this->form;
+        $modules = $this->modules;
+
         return $this->response->setMetaTitle(trans('block::category.names'))
-            ->view($view)
-            ->data(compact('data', 'meta'))
+            ->view('block::category.index')
+            ->data(compact('data', 'meta', 'links', 'modules', 'form'))
             ->output();
     }
 
@@ -59,18 +66,15 @@ class CategoryResourceController extends ResourceController
      *
      * @return Response
      */
-    public function show(CategoryRequest $request, Category $category)
+    public function show(CategoryRequest $request, CategoryRepositoryInterface $repository)
     {
-
-        if ($category->exists) {
-            $view = 'block::category.show';
-        } else {
-            $view = 'block::category.new';
-        }
-
-        return $this->response->setMetaTitle(trans('app.view') . ' ' . trans('block::category.name'))
-            ->data(compact('category'))
-            ->view($view)
+        $form = $this->form;
+        $modules = $this->modules;
+        $data = $repository->toArray();
+        return $this->response
+            ->setMetaTitle(trans('app.view') . ' ' . trans('block::category.name'))
+            ->data(compact('data', 'form', 'modules', 'form'))
+            ->view('block::category.show')
             ->output();
     }
 
@@ -78,16 +82,17 @@ class CategoryResourceController extends ResourceController
      * Show the form for creating a new category.
      *
      * @param Request $request
-     *
+     *x
      * @return Response
      */
-    public function create(CategoryRequest $request)
+    public function create(CategoryRequest $request, CategoryRepositoryInterface $repository)
     {
-
-        $category = $this->repository->newInstance([]);
-        return $this->response->setMetaTitle(trans('app.new') . ' ' . trans('block::category.name')) 
-            ->view('block::category.create') 
-            ->data(compact('category'))
+        $form = $this->form;
+        $modules = $this->modules;
+        $data = $repository->toArray();
+        return $this->response->setMetaTitle(trans('app.new') . ' ' . trans('block::category.name'))
+            ->view('block::category.create')
+            ->data(compact('data', 'form', 'modules'))
             ->output();
     }
 
@@ -98,24 +103,26 @@ class CategoryResourceController extends ResourceController
      *
      * @return Response
      */
-    public function store(CategoryRequest $request)
+    public function store(CategoryRequest $request, CategoryRepositoryInterface $repository)
     {
         try {
-            $attributes              = $request->all();
-            $attributes['user_id']   = user_id();
+            $attributes = $request->all();
+            $attributes['user_id'] = user_id();
             $attributes['user_type'] = user_type();
-            $category                 = $this->repository->create($attributes);
+            $repository->create($attributes);
+            $data = $repository->toArray();
 
             return $this->response->message(trans('messages.success.created', ['Module' => trans('block::category.name')]))
                 ->code(204)
+                ->data(compact('data'))
                 ->status('success')
-                ->url(guard_url('block/category/' . $category->getRouteKey()))
+                ->url(guard_url('block/category/' . $data['id']))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('block/category'))
+                ->url(guard_url('/block/category'))
                 ->redirect();
         }
 
@@ -129,11 +136,15 @@ class CategoryResourceController extends ResourceController
      *
      * @return Response
      */
-    public function edit(CategoryRequest $request, Category $category)
+    public function edit(CategoryRequest $request, CategoryRepositoryInterface $repository)
     {
+        $form = $this->form;
+        $modules = $this->modules;
+        $data = $repository->toArray();
+
         return $this->response->setMetaTitle(trans('app.edit') . ' ' . trans('block::category.name'))
             ->view('block::category.edit')
-            ->data(compact('category'))
+            ->data(compact('data', 'form', 'modules'))
             ->output();
     }
 
@@ -145,22 +156,24 @@ class CategoryResourceController extends ResourceController
      *
      * @return Response
      */
-    public function update(CategoryRequest $request, Category $category)
+    public function update(CategoryRequest $request, CategoryRepositoryInterface $repository)
     {
         try {
             $attributes = $request->all();
+            $repository->update($attributes);
+            $data = $repository->toArray();
 
-            $category->update($attributes);
             return $this->response->message(trans('messages.success.updated', ['Module' => trans('block::category.name')]))
                 ->code(204)
                 ->status('success')
-                ->url(guard_url('block/category/' . $category->getRouteKey()))
+                ->data(compact('data'))
+                ->url(guard_url('block/category/' . $data['id']))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('block/category/' . $category->getRouteKey()))
+                ->url(guard_url('block/category/' . $data['id']))
                 ->redirect();
         }
 
@@ -173,15 +186,17 @@ class CategoryResourceController extends ResourceController
      *
      * @return Response
      */
-    public function destroy(CategoryRequest $request, Category $category)
+    public function destroy(CategoryRequest $request, CategoryRepositoryInterface $repository)
     {
         try {
+            $repository->delete();
+            $data = $repository->toArray();
 
-            $category->delete();
             return $this->response->message(trans('messages.success.deleted', ['Module' => trans('block::category.name')]))
                 ->code(202)
                 ->status('success')
-                ->url(guard_url('block/category/' . $category->getRouteKey()))
+                ->data(compact('data'))
+                ->url(guard_url('block/category/0'))
                 ->redirect();
 
         } catch (Exception $e) {
@@ -189,75 +204,9 @@ class CategoryResourceController extends ResourceController
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('block/category/' . $category->getRouteKey()))
+                ->url(guard_url('block/category/' . $data['id']))
                 ->redirect();
         }
 
     }
-
-    /**
-     * Remove multiple category.
-     *
-     * @param Model   $category
-     *
-     * @return Response
-     */
-    public function delete(CategoryRequest $request, $type)
-    {
-        try {
-            $ids = hashids_decode($request->input('ids'));
-
-            if ($type == 'purge') {
-                $this->repository->purge($ids);
-            } else {
-                $this->repository->delete($ids);
-            }
-
-            return $this->response->message(trans('messages.success.deleted', ['Module' => trans('block::category.name')]))
-                ->status("success")
-                ->code(202)
-                ->url(guard_url('block/category'))
-                ->redirect();
-
-        } catch (Exception $e) {
-
-            return $this->response->message($e->getMessage())
-                ->status("error")
-                ->code(400)
-                ->url(guard_url('block/category'))
-                ->redirect();
-        }
-
-    }
-
-    /**
-     * Restore deleted categories.
-     *
-     * @param Model   $category
-     *
-     * @return Response
-     */
-    public function restore(CategoryRequest $request)
-    {
-        try {
-            $ids = hashids_decode($request->input('ids'));
-            $this->repository->restore($ids);
-
-            return $this->response->message(trans('messages.success.restore', ['Module' => trans('block::category.name')]))
-                ->status("success")
-                ->code(202)
-                ->url(guard_url('block/category'))
-                ->redirect();
-
-        } catch (Exception $e) {
-
-            return $this->response->message($e->getMessage())
-                ->status("error")
-                ->code(400)
-                ->url(guard_url('block/category/'))
-                ->redirect();
-        }
-
-    }
-
 }

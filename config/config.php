@@ -5,112 +5,110 @@ return [
     /**
      * Provider.
      */
-    'provider' => 'litepie',
+    'provider' => 'litecms',
 
     /*
      * Package.
      */
-    'package'  => 'block',
+    'package' => 'block',
 
     /*
      * Modules.
      */
-    'modules'  => [
-        'category',
-        'block',
+    'modules' => ['block', 'category'],
+
+    'block' => [
+        'model' => [
+            'model' => \Litecms\Block\Models\Block::class,
+            'table' => 'blocks',
+            'hidden' => [],
+            'visible' => [],
+            'guarded' => ['*'],
+            'slugs' => ['slug' => 'name'],
+            'dates' => ['deleted_at', 'createdat', 'updated_at'],
+            'appends' => [],
+            'fillable' => [
+                'id', 'category_id', 'name', 'url', 'icon', 'order', 'description', 'image', 
+                'images', 'slug', 'status', 'user_id', 'user_type', 'upload_folder', 
+                'deleted_at', 'created_at', 'updated_at'
+            ],
+            'translatables' => [],
+            'upload_folder' => 'block/block',
+            'uploads' => [
+                'images' => [
+                    'count' => 10,
+                    'type' => 'image',
+                ],
+                'image' => [
+                    'count' => 1,
+                    'type' => 'image',
+                ],
+            ],
+
+            'casts' => [
+                'images' => 'array',
+                'image' => 'array',
+            ],
+
+            'revision' => [],
+            'perPage' => '20',
+            'search' => [
+                'name' => 'like',
+                'status',
+            ],
+        ],
+
+        'controller' => [
+            'provider' => 'Litecms',
+            'package' => 'Block',
+            'module' => 'Block',
+        ],
     ],
-
-    /*
-     * Image size.
-     */
-    'image'    => [
-
-        'sm' => [
-            'width'     => '140',
-            'height'    => '140',
-            'action'    => 'fit',
-            'watermark' => 'img/logo/default.png',
-        ],
-
-        'md' => [
-            'width'     => '370',
-            'height'    => '420',
-            'action'    => 'fit',
-            'watermark' => 'img/logo/default.png',
-        ],
-
-        'lg' => [
-            'width'     => '780',
-            'height'    => '497',
-            'action'    => 'fit',
-            'watermark' => 'img/logo/default.png',
-        ],
-        'xl' => [
-            'width'     => '800',
-            'height'    => '530',
-            'action'    => 'fit',
-            'watermark' => 'img/logo/default.png',
-        ],
-
-    ],
-
     'category' => [
-        'model'         => 'Litecms\Block\Models\Category',
-        'table'         => 'block_categories',
-        'presenter'     => \Litecms\Block\Repositories\Presenter\CategoryItemPresenter::class,
-        'hidden'        => [],
-        'visible'       => [],
-        'guarded'       => ['*'],
-        'slugs'         => ['slug' => 'name'],
-        'dates'         => ['deleted_at'],
-        'appends'       => [],
-        'fillable'      => ['user_id', 'user_type', 'name', 'slug', 'title', 'details', 'status', 'upload_folder'],
-        'translatables' => [],
-
-        'upload_folder' => '/block/category',
-        'uploads'       => [],
-        'casts'         => [],
-        'revision'      => [],
-        'perPage'       => '20',
-        'search'        => [
-            'name' => 'like',
-            'status',
-        ],
-    ],
-    'block'    => [
-        'model'         => 'Litecms\Block\Models\Block',
-        'table'         => 'blocks',
-        'presenter'     => \Litecms\Block\Repositories\Presenter\BlockItemPresenter::class,
-        'hidden'        => [],
-        'visible'       => [],
-        'guarded'       => ['*'],
-        'slugs'         => ['slug' => 'name'],
-        'dates'         => ['deleted_at'],
-        'appends'       => [],
-        'fillable'      => ['user_id', 'user_type', 'category_id', 'name', 'url', 'icon', 'order', 'description', 'status', 'image', 'images', 'upload_folder'],
-        'translatables' => [],
-
-        'upload_config' => 'block.block',
-        'upload_folder' => 'block/block',
-        'uploads'       => [
-            'image'  => [
-                'count' => 1,
-                'type'  => 'image',
-            ],
+        'model' => [
+            'model' => \Litecms\Block\Models\Category::class,
+            'table' => 'block_categories',
+            'hidden' => [],
+            'visible' => [],
+            'guarded' => ['*'],
+            'slugs' => ['slug' => 'name'],
+            'dates' => ['deleted_at', 'createdat', 'updated_at'],
+            'appends' => [],
+            'fillable' => ['id', 'name', 'slug', 'title', 'details', 'image', 'status', 'user_type', 'user_id', 'upload_folder', 'deleted_at', 'created_at', 'updated_at'],
+            'translatables' => [],
+            'upload_folder' => 'block/category',
+            'uploads' => [
+                /*
             'images' => [
-                'count' => 10,
-                'type'  => 'image',
+            'count' => 10,
+            'type'  => 'image',
+            ],
+            'file' => [
+            'count' => 1,
+            'type'  => 'file',
+            ],
+             */
+            ],
+
+            'casts' => [
+                /*
+            'images'    => 'array',
+            'file'      => 'array',
+             */
+            ],
+
+            'revision' => [],
+            'perPage' => '20',
+            'search' => [
+                'name' => 'like',
+                'status',
             ],
         ],
-        'casts'         => [
-            'image'  => 'array',
-            'images' => 'array',
-        ],
-        'revision'      => [],
-        'perPage'       => '20',
-        'search'        => [
-            'name' => 'like',
-            'status',
+
+        'controller' => [
+            'provider' => 'Litecms',
+            'package' => 'Block',
+            'module' => 'Category',
         ],
     ],
 ];

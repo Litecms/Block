@@ -3,7 +3,6 @@
 namespace Litecms\Block\Http\Requests;
 
 use Litepie\Http\Request\AbstractRequest;
-use Litecms\Block\Models\Category;
 
 class CategoryRequest extends AbstractRequest
 {
@@ -18,12 +17,12 @@ class CategoryRequest extends AbstractRequest
 
         if (is_null($this->model)) {
             // Determine if the user is authorized to access category module,
-            return $this->formRequest->user()->can('view', Category::class);
+            return $this->user()->can('view', app(config('litecms.block.category.model.model')));
         }
 
         if ($this->isWorkflow()) {
             // Determine if the user is authorized to change status of an entry,
-            return $this->can($this->getStatus());
+            return $this->can($this->getTransition());
         }
 
         if ($this->isCreate() || $this->isStore()) {
@@ -72,4 +71,5 @@ class CategoryRequest extends AbstractRequest
 
         ];
     }
+
 }

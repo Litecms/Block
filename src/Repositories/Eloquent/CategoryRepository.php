@@ -3,18 +3,16 @@
 namespace Litecms\Block\Repositories\Eloquent;
 
 use Litecms\Block\Interfaces\CategoryRepositoryInterface;
-use Litepie\Repository\Eloquent\BaseRepository;
+use Litepie\Repository\BaseRepository;
+use Litecms\Block\Repositories\Eloquent\Presenters\CategoryItemPresenter;
+
 
 class CategoryRepository extends BaseRepository implements CategoryRepositoryInterface
 {
-    /**
-     * Booting the repository.
-     *
-     * @return null
-     */
+
     public function boot()
     {
-        $this->pushCriteria(app('Litepie\Repository\Criteria\RequestCriteria'));
+        $this->fieldSearchable = config('litecms.page.page.search');
     }
 
     /**
@@ -24,7 +22,16 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
      */
     public function model()
     {
-        $this->fieldSearchable = config('litecms.block.category.search');
-        return config('litecms.block.category.model');
+        return config('litecms.block.category.model.model');
+    }
+
+    /**
+     * Returns the default presenter if none is availabale.
+     *
+     * @return void
+     */
+    public function presenter()
+    {
+        return CategoryItemPresenter::class;
     }
 }

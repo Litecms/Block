@@ -1,29 +1,80 @@
-Lavalite package that provides block management facility for the cms.
+# Installation
 
-## Installation
+The instructions below will help you to properly install the generated package to the lavalite project.
 
-Begin by installing this package through Composer. Edit your project's `composer.json` file to require `litecms/block`.
+## Location
 
-    "litecms/block": "dev-master"
+Extract the package contents to the folder 
 
-Next, update Composer from the Terminal:
+`/packages/litecms/block/`
 
-    composer update
+## Composer
 
-Once this operation completes execute below cammnds in command line to finalize installation.
+Add the below entries in the `composer.json` file's autoload section and run the command `composer dump-autoload` in terminal.
 
-    Litecms\Block\Providers\BlockServiceProvider::class,
+```json
 
-And also add it to alias
+...
+     "autoload": {
+         ...
 
-    'Block'  => Litecms\Block\Facades\Block::class,
+        "classmap": [
+            ...
+            
+            "packages/litecms/block/database/seeds",
+            
+            ...
+        ],
+        "psr-4": {
+            ...
+            
+            "Litecms\\Block\\": "packages/litecms/block/src",
+            
+            ...
+        }
+    },
+...
 
-## Publishing files and migraiting database.
+```
 
-**Migration and seeds**
+## Config
+
+Add the entries in service provider in `config/app.php`
+
+```php
+
+...
+    'providers'       => [
+        ...
+        
+        Litecms\Block\Providers\BlockServiceProvider::class,
+        
+        ...
+    ],
+
+    ...
+
+    'alias'             => [
+        ...
+        
+        'Block'  => Litecms\Block\Facades\Block::class,
+        
+        ...
+    ]
+...
+
+```
+
+## Migrate
+
+After service provider is set run the commapnd to migrate and seed the database.
+
 
     php artisan migrate
     php artisan db:seed --class=Litecms\\BlockTableSeeder
+
+## Publishing
+
 
 **Publishing configuration**
 
@@ -36,6 +87,9 @@ And also add it to alias
 **Publishing views**
 
     php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="view"
+
+
+## URLs and APIs
 
 
 ### Web Urls
@@ -56,7 +110,7 @@ And also add it to alias
 ### API endpoints
 
 **List**
-
+ 
     http://path-to-route-folder/api/user/block/{modulename}
     METHOD: GET
 

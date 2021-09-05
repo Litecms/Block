@@ -1,41 +1,29 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-9">
-            <div class="app-entry-form-section" id="basic">
-                <div class="section-title">Details</div>
-                <div class="row disabled">
-                    {!! Form::hidden('upload_folder')!!}
-                    <div class='col-md-4 col-sm-4'>
-                        {!! Form::text('name')
-                        -> label(trans('block::category.label.name'))
-                        -> placeholder(trans('block::category.placeholder.name'))
-                        -> required()!!}
+        <div class="col-lg-8">
+            @foreach($form['fields'] as $key => $fields)
+            <div class="app-entry-form-section" id="{!!$key!!}">
+                <div class="section-title">{!!$form['groups'][$key]!!}</div>
+                <div class="row">
+                    @foreach($fields as $key => $field)
+                    <div class="col-{!!$field['col'] ?? '12'!!}">
+                        {!! Form::input($key)->apply($field) !!}
                     </div>
-                    <div class='col-md-4 col-sm-4'>
-                        {!! Form::text('slug')
-                        -> label(trans('block::category.label.slug'))
-                        -> placeholder(trans('block::category.placeholder.slug'))
-                        -> required()!!}
-                    </div>
-                    <div class='col-md-4 col-sm-4'>
-                        {!! Form::select('status')
-                        -> label(trans('block::category.label.status'))
-                        -> options(trans('block::category.options.status'))
-                        -> placeholder(trans('block::category.placeholder.status'))
-                        !!}
-                    </div>
-                    <div class='col-md-12 col-sm-12'>
-                        {!! Form::text('title')
-                        -> label(trans('block::category.label.title'))
-                        -> placeholder(trans('block::category.placeholder.title'))!!}
-                    </div>
-                    <div class='col-md-12 col-sm-12'>
-                        {!! Form::textarea('details')
-                        -> label(trans('block::category.label.details'))
-                        -> placeholder(trans('block::category.placeholder.details'))!!}
-                    </div>
+                    @endforeach
                 </div>
             </div>
+            @endforeach
+        </div>
+
+        <div class="col-lg-4 d-none d-lg-block">
+            <aside class="app-create-steps"> 
+                <h5 class="steps-header">{!!__('Steps')!!}</h5>
+                <div class="steps-wrap" id="steps_nav">
+                @foreach($form['groups'] as $key => $value)
+                <a class="step-item active" href="#{!!$key!!}"><span>{!!$loop->index+1!!}</span> {!!$value!!} </a>
+                @endforeach
+                </div>
+            </aside>
         </div>
     </div>
 </div>

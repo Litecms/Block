@@ -1,14 +1,12 @@
 {
     "name": "litecms/block",
-    "description": "Block package for Lavalite",
-    "keywords": ["lavalite", "block"],
+    "description": "Block package for litecms.",
+    "keywords": ["lavalite", "Block"],
     "license": "MIT",
-    "type": "lavalite-package",
-    "homepage": "https://github.com/Litecms/Block",
     "authors": [
         {
-            "name": "Renfos Technologies Pvt. Ltd.",
-            "email": "info@renfos.com"
+            "name": "Lavalite",
+            "email": "info@lavalite.org"
         }
     ],
     "require": {
@@ -18,14 +16,14 @@
         "classmap": [
             "database/seeds"
         ],
-        "psr-4": { 
-            "Litecms\\Block\\": "/src" 
+        "psr-4": {
+            "Litecms\\Block\\": "src"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Litecms\\Block\\BlockServiceProvider"
+                "Litecms\\Block\\Providers\\BlockServiceProvider"
             ],
             "aliases": {
                 "Block"       : "Litecms\\Block\\Facades\\Block"
