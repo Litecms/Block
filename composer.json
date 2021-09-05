@@ -1,40 +1,34 @@
 {
-  "name": "litecms/block",
-  "description": "Block package for Lavalite",
-  "keywords": [
-    "lavalite",
-    "block"
-  ],
-  "license": "MIT",
-  "type": "lavalite-package",
-  "homepage": "https://github.com/Litecms/Block",
-  "authors": [
-    {
-      "name": "Renfos Technologies Pvt. Ltd.",
-      "email": "info@renfos.com"
-    }
-  ],
-  "require": {
-    "php": "^7.2.5|^8.0",
-    "composer/installers": "~1.9"
-  },
-  "autoload": {
-    "classmap": [
-      "database/seeds"
+    "name": "litecms/block",
+    "description": "Block package for litecms.",
+    "keywords": ["lavalite", "Block"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lavalite",
+            "email": "info@lavalite.org"
+        }
     ],
-    "psr-4": {
-      "Litecms\\Block\\": "/src"
-    }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Litecms\\Block\\BlockServiceProvider"
-      ],
-      "aliases": {
-        "Block": "Litecms\\Block\\Facades\\Block"
-      }
-    }
-  },
-  "minimum-stability": "dev"
+    "require": {
+        "php": "^7.1.3"
+    },
+    "autoload": {
+        "classmap": [
+            "database/seeds"
+        ],
+        "psr-4": {
+            "Litecms\\Block\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Litecms\\Block\\Providers\\BlockServiceProvider"
+            ],
+            "aliases": {
+                "Block"       : "Litecms\\Block\\Facades\\Block"
+            }
+        }
+    },
+    "minimum-stability": "dev"
 }

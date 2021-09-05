@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateBlocksTable extends Migration
 {
@@ -13,22 +15,6 @@ class CreateBlocksTable extends Migration
     public function up()
     {
 
-        /*
-         * Table: categories
-         */
-        Schema::create('block_categories', function ($table) {
-            $table->increments('id');
-            $table->string('name', 255)->nullable();
-            $table->string('slug', 200)->nullable();
-            $table->string('title', 200)->nullable();
-            $table->text('details')->nullable();
-            $table->enum('status', ['show', 'hide'])->default('hide')->nullable();
-            $table->string('user_type', 100)->nullable();
-            $table->integer('user_id')->nullable();
-            $table->string('upload_folder', 100)->nullable();
-            $table->softDeletes();
-            $table->nullableTimestamps();
-        });
         /*
          * Table: blocks
          */
@@ -43,7 +29,7 @@ class CreateBlocksTable extends Migration
             $table->text('image')->nullable();
             $table->text('images')->nullable();
             $table->string('slug', 200)->nullable();
-            $table->enum('status', ['show', 'hide'])->default('hide')->nullable();
+            $table->enum('status', ['show','hide'])->nullable();
             $table->integer('user_id')->nullable();
             $table->string('user_type', 100)->nullable();
             $table->string('upload_folder', 100)->nullable();
@@ -53,14 +39,13 @@ class CreateBlocksTable extends Migration
     }
 
     /*
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    * Reverse the migrations.
+    *
+    * @return void
+    */
 
     public function down()
     {
-        Schema::drop('block_categories');
         Schema::drop('blocks');
     }
 }

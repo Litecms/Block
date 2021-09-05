@@ -2,79 +2,104 @@
 
 namespace Litecms\Block\Policies;
 
-use App\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use Litepie\User\Contracts\UserPolicy;
 use Litecms\Block\Models\Category;
 
 class CategoryPolicy
 {
-    use HandlesAuthorization;
 
     /**
      * Determine if the given user can view the category.
      *
-     * @param User $user
+     * @param UserPolicy $user
      * @param Category $category
      *
      * @return bool
      */
-    public function view(User $user, Category $category)
+    public function view(UserPolicy $user, Category $category)
     {
-
         if ($user->canDo('block.category.view') && $user->isAdmin()) {
             return true;
         }
 
-        return $user->id == $category->user_id;
+        return $category->user_id == user_id() && $category->user_type == user_type();
     }
 
     /**
      * Determine if the given user can create a category.
      *
-     * @param User $user
+     * @param UserPolicy $user
      * @param Category $category
      *
      * @return bool
      */
-    public function create(User $user)
+    public function create(UserPolicy $user)
     {
-        return $user->canDo('block.category.create');
+        return  $user->canDo('block.category.create');
     }
 
     /**
      * Determine if the given user can update the given category.
      *
-     * @param User $user
+     * @param UserPolicy $user
      * @param Category $category
      *
      * @return bool
      */
-    public function update(User $user, Category $category)
+    public function update(UserPolicy $user, Category $category)
     {
-
-        if ($user->canDo('block.category.update') && $user->isAdmin()) {
+        if ($user->canDo('block.category.edit') && $user->isAdmin()) {
             return true;
         }
 
-        return $user->id == $category->user_id;
+        return $category->user_id == user_id() && $category->user_type == user_type();
     }
 
     /**
      * Determine if the given user can delete the given category.
      *
-     * @param User $user
+     * @param UserPolicy $user
      * @param Category $category
      *
      * @return bool
      */
-    public function destroy(User $user, Category $category)
+    public function destroy(UserPolicy $user, Category $category)
     {
+        return $category->user_id == user_id() && $category->user_type == user_type();
+    }
 
-        if ($user->canDo('block.category.delete') && $user->isAdmin()) {
+    /**
+     * Determine if the given user can verify the given category.
+     *
+     * @param UserPolicy $user
+     * @param Category $category
+     *
+     * @return bool
+     */
+    public function verify(UserPolicy $user, Category $category)
+    {
+        if ($user->canDo('block.category.verify')) {
             return true;
         }
 
-        return $user->id == $category->user_id;
+        return false;
+    }
+
+    /**
+     * Determine if the given user can approve the given category.
+     *
+     * @param UserPolicy $user
+     * @param Category $category
+     *
+     * @return bool
+     */
+    public function approve(UserPolicy $user, Category $category)
+    {
+        if ($user->canDo('block.category.approve')) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -87,11 +112,8 @@ class CategoryPolicy
      */
     public function before($user, $ability)
     {
-
         if ($user->isSuperuser()) {
             return true;
         }
-
     }
-
 }

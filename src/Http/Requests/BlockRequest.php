@@ -3,7 +3,6 @@
 namespace Litecms\Block\Http\Requests;
 
 use Litepie\Http\Request\AbstractRequest;
-use Litecms\Block\Models\Block;
 
 class BlockRequest extends AbstractRequest
 {
@@ -13,17 +12,17 @@ class BlockRequest extends AbstractRequest
      * @return bool
      */
     public function authorize()
-    {        
+    {
         $this->model = $this->route('block');
 
         if (is_null($this->model)) {
             // Determine if the user is authorized to access block module,
-            return $this->formRequest->user()->can('view', app(Block::class));
+            return $this->user()->can('view', app(config('litecms.block.block.model.model')));
         }
 
         if ($this->isWorkflow()) {
             // Determine if the user is authorized to change status of an entry,
-            return $this->can($this->getStatus());
+            return $this->can($this->getTransition());
         }
 
         if ($this->isCreate() || $this->isStore()) {
@@ -72,4 +71,5 @@ class BlockRequest extends AbstractRequest
 
         ];
     }
+
 }

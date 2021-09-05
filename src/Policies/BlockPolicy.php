@@ -3,12 +3,10 @@
 namespace Litecms\Block\Policies;
 
 use Litepie\User\Contracts\UserPolicy;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Litecms\Block\Models\Block;
 
 class BlockPolicy
 {
-    use HandlesAuthorization;
 
     /**
      * Determine if the given user can view the block.
@@ -20,12 +18,11 @@ class BlockPolicy
      */
     public function view(UserPolicy $user, Block $block)
     {
-
         if ($user->canDo('block.block.view') && $user->isAdmin()) {
             return true;
         }
 
-        return $user->id == $block->user_id;
+        return $block->user_id == user_id() && $block->user_type == user_type();
     }
 
     /**
@@ -38,7 +35,7 @@ class BlockPolicy
      */
     public function create(UserPolicy $user)
     {
-        return $user->canDo('block.block.create');
+        return  $user->canDo('block.block.create');
     }
 
     /**
@@ -51,12 +48,11 @@ class BlockPolicy
      */
     public function update(UserPolicy $user, Block $block)
     {
-
-        if ($user->canDo('block.block.update') && $user->isAdmin()) {
+        if ($user->canDo('block.block.edit') && $user->isAdmin()) {
             return true;
         }
 
-        return $user->id == $block->user_id;
+        return $block->user_id == user_id() && $block->user_type == user_type();
     }
 
     /**
@@ -69,12 +65,41 @@ class BlockPolicy
      */
     public function destroy(UserPolicy $user, Block $block)
     {
+        return $block->user_id == user_id() && $block->user_type == user_type();
+    }
 
-        if ($user->canDo('block.block.delete') && $user->isAdmin()) {
+    /**
+     * Determine if the given user can verify the given block.
+     *
+     * @param UserPolicy $user
+     * @param Block $block
+     *
+     * @return bool
+     */
+    public function verify(UserPolicy $user, Block $block)
+    {
+        if ($user->canDo('block.block.verify')) {
             return true;
         }
 
-        return $user->id == $block->user_id;
+        return false;
+    }
+
+    /**
+     * Determine if the given user can approve the given block.
+     *
+     * @param UserPolicy $user
+     * @param Block $block
+     *
+     * @return bool
+     */
+    public function approve(UserPolicy $user, Block $block)
+    {
+        if ($user->canDo('block.block.approve')) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -87,11 +112,8 @@ class BlockPolicy
      */
     public function before($user, $ability)
     {
-
         if ($user->isSuperuser()) {
             return true;
         }
-
     }
-
 }

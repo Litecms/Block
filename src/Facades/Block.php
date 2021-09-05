@@ -13,6 +13,6 @@ class Block extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'block';
+        return 'litecms.block';
     }
 }
