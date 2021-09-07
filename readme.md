@@ -23,7 +23,8 @@ And also add it to alias
 **Migration and seeds**
 
     php artisan migrate
-    php artisan db:seed --class=Litecms\\BlockTableSeeder
+    php artisan db:seed --class=Litecms\\Block\\Seeds\\BlockTableSeeder
+    php artisan db:seed --class=Litecms\\Block\\Seeds\\CategoryTableSeeder
 
 **Publishing configuration**
 

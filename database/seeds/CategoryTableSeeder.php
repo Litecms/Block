@@ -1,6 +1,6 @@
 <?php
 
-namespace Litecms\Block;
+namespace Litecms\Block\Seeds;
 
 use DB;
 use Illuminate\Database\Seeder;
