@@ -71,7 +71,8 @@ After service provider is set run the commapnd to migrate and seed the database.
 
 
     php artisan migrate
-    php artisan db:seed --class=Litecms\\BlockTableSeeder
+    php artisan db:seed --class=Litecms\\Block\\Seeds\\BlockTableSeeder
+    php artisan db:seed --class=Litecms\\Block\\Seeds\\CategoryTableSeeder
 
 ## Publishing
 
