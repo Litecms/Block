@@ -18,7 +18,7 @@ class CategoryPolicy
      */
     public function view(UserPolicy $user, Category $category)
     {
-        if ($user->canDo('block.category.view') && $user->isAdmin()) {
+        if ($user->canDo('block.block.view') && $user->isAdmin()) {
             return true;
         }
 
@@ -35,7 +35,7 @@ class CategoryPolicy
      */
     public function create(UserPolicy $user)
     {
-        return  $user->canDo('block.category.create');
+        return  $user->canDo('block.block.create');
     }
 
     /**
@@ -48,7 +48,7 @@ class CategoryPolicy
      */
     public function update(UserPolicy $user, Category $category)
     {
-        if ($user->canDo('block.category.edit') && $user->isAdmin()) {
+        if ($user->canDo('block.block.edit') && $user->isAdmin()) {
             return true;
         }
 
@@ -78,7 +78,7 @@ class CategoryPolicy
      */
     public function verify(UserPolicy $user, Category $category)
     {
-        if ($user->canDo('block.category.verify')) {
+        if ($user->canDo('block.block.verify')) {
             return true;
         }
 
@@ -95,7 +95,7 @@ class CategoryPolicy
      */
     public function approve(UserPolicy $user, Category $category)
     {
-        if ($user->canDo('block.category.approve')) {
+        if ($user->canDo('block.block.approve')) {
             return true;
         }
 
