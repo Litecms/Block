@@ -69,40 +69,6 @@ class BlockPolicy
     }
 
     /**
-     * Determine if the given user can verify the given block.
-     *
-     * @param UserPolicy $user
-     * @param Block $block
-     *
-     * @return bool
-     */
-    public function verify(UserPolicy $user, Block $block)
-    {
-        if ($user->canDo('block.block.verify')) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Determine if the given user can approve the given block.
-     *
-     * @param UserPolicy $user
-     * @param Block $block
-     *
-     * @return bool
-     */
-    public function approve(UserPolicy $user, Block $block)
-    {
-        if ($user->canDo('block.block.approve')) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Determine if the user can perform a given action ve.
      *
      * @param [type] $user    [description]
