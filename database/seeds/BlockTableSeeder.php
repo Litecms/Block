@@ -69,12 +69,12 @@ class BlockTableSeeder extends Seeder
             ],
         ]);
 
-        DB::table('menus')->insertGetId([
+        DB::table('menus')->insert([
             'parent_id' => 1,
             'key' => null,
             'url' => 'admin/block/block',
             'name' => 'Blocks',
-            'icon' => 'las fa-th-large',
+            'icon' => 'las la-boxes',
             'target' => null,
             'order' => 100,
             'status' => 1,
