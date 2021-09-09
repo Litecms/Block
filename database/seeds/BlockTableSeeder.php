@@ -74,7 +74,7 @@ class BlockTableSeeder extends Seeder
             'key' => null,
             'url' => 'admin/block/block',
             'name' => 'Blocks',
-            'icon' => 'las la-boxes',
+            'icon' => 'las la-dice',
             'target' => null,
             'order' => 100,
             'status' => 1,
