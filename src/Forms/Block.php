@@ -148,6 +148,9 @@ class Block extends FormInterpreter
                 "placeholder" => trans('block::block.placeholder.category_id'),
                 "rules" => '',
                 "group" => "main",
+                'options' => function () {
+                    return \Block::categoryOptions('id', 'name');
+                },
                 "section" => "first",
                 "col" => "4",
                 "append" => null,
@@ -195,7 +198,7 @@ class Block extends FormInterpreter
                     'wrapper' => [],
                     "label" => [],
                     "element" => [
-                        'class' => 'html-editor-mini'
+                        'class' => 'html-editor-mini',
                     ],
 
                 ],
