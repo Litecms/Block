@@ -2,8 +2,6 @@
 
 namespace Litecms\Block;
 
-use User;
-
 class Block
 {
     /**
@@ -20,14 +18,23 @@ class Block
     }
 
     /**
-     * Returns count of block.
-     *
-     * @param array $filter
-     *
-     * @return int
+     * take latest blocks for public side
+     * @param type $count
+     * @param type|string $view
+     * @return type
      */
-    public function count()
+
+    public function display($category)
     {
-        return  0;
+
+        $view = (view()->exists("block::public.{$category}")) ? "block::public.{$category}" : "block::public.default";
+
+        $category = $this->category
+            ->scopeQuery(function ($query) use ($category) {
+                return $query->with('blocks')->whereSlug($category);
+            })->first();
+
+        $blocks = $category->blocks;
+        return view($view, compact('blocks', 'category'))->render();
     }
 }
