@@ -52,6 +52,11 @@ class Category extends FormInterpreter
                 "roles" => [],
             ]
         ];
+        self::$orderBy = [
+            'created_at' => trans('blog::blog.label.created_at'),
+            'name' => trans('blog::blog.label.title'),
+            'status' => trans('blog::blog.label.status'),
+        ];
         self::$groups = [
             'main' => trans('block::block.groups.main'),
             'details' => trans('block::block.groups.details'),
