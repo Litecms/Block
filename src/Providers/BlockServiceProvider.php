@@ -25,7 +25,7 @@ class BlockServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'block');
 
         // Load translation
-        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'block');
+        $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'block');
 
         // Load migrations
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');

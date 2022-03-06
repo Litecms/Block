@@ -26,5 +26,18 @@ class Block extends Model
      */
      protected $config = 'litecms.block.block.model';
 
+    /**
+     * The blog_categories that belong to the blog.
+     */
+    public function category()
+    {
 
+        return $this->belongsTo('Litecms\Block\Models\Category', 'category_id');
+    }
+
+    public function user()
+    {
+
+        return $this->belongsTo('App\User', 'user_id');
+    }
 }
