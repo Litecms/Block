@@ -1,6 +1,6 @@
 <?php
 
-namespace Litecms\Block\Seeds;
+namespace Litecms\Block\Seeders;
 
 use DB;
 use Illuminate\Database\Seeder;
@@ -79,7 +79,7 @@ class BlockTableSeeder extends Seeder
             'icon' => 'las la-dice',
             'target' => null,
             'order' => 100,
-            'status' => 1,
+            'status' => 'Show',
         ]);
 
         DB::table('permissions')->insert([
