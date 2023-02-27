@@ -26,5 +26,11 @@ class Category extends Model
      */
      protected $config = 'litecms.block.category.model';
 
-
+    /**
+     * The categories that belong to the blog.
+     */
+    public function blocks()
+    {
+        return $this->hasMany('Litecms\Block\Models\Block', 'category_id');
+    }
 }

@@ -57,6 +57,11 @@ class Block extends FormInterpreter
             'details' => trans('block::block.groups.details'),
             'images' => trans('block::block.groups.images'),
         ];
+        self::$orderBy = [
+            'created_at' => trans('blog::blog.label.created_at'),
+            'name' => trans('blog::blog.label.title'),
+            'status' => trans('blog::blog.label.status'),
+        ];
         self::$list = [
             [
                 'key' => "ref",
@@ -148,6 +153,9 @@ class Block extends FormInterpreter
                 "placeholder" => trans('block::block.placeholder.category_id'),
                 "rules" => '',
                 "group" => "main",
+                'options' => function () {
+                    return \Block::categoryOptions('id', 'name');
+                },
                 "section" => "first",
                 "col" => "4",
                 "append" => null,
@@ -195,7 +203,7 @@ class Block extends FormInterpreter
                     'wrapper' => [],
                     "label" => [],
                     "element" => [
-                        'class' => 'html-editor-mini'
+                        'class' => 'html-editor-mini',
                     ],
 
                 ],
