@@ -1,3 +1,4 @@
+
 <div class="app-entry-form-wrap">
     <div class="app-sec-title app-sec-title-with-icon app-sec-title-with-action">
         <a href="#" class="mobile-back-btn"><i class="las la-arrow-left"></i></a>
@@ -20,14 +21,28 @@
             </div>
         </div>
     </div>
-    {!!Form::vertical_open()
-    ->id('form-create')
-    ->method('POST')
-    ->files('true')
-    ->action(guard_url('block/block'))!!}
 
-    @include('block::block.partial.entry', ['mode' => 'create'])
+    <div class="container-fluid">
+        <div class="row">
+        <div class="col-lg-8 entry-form">
+            {!!Form::vertical_open()
+            ->id('form-create')
+            ->method('POST')
+            ->files('true')
+            ->action(guard_url('block/block'))!!}
+            @php
+            $form['fields'] = form_merge_form($form['fields'], compact('data', 'meta'));
+            $mode = 'create';
+            @endphp
 
-    {!! Form::close() !!}
+            @include('block::block.partials.form')
+
+            {!! Form::close() !!}
+        </div>
+
+            @include('block::block.partials.aside')
+        </div>
+    </div>
+
 </div>
 

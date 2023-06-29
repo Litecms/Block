@@ -27,15 +27,25 @@
         </div>
     </div>
 
+    <div class="container-fluid">
+        <div class="row">
+        <div class="col-lg-8 entry-form">
+            {!!Form::vertical_open()
+            ->method('PUT')
+            ->id('form-edit')
+            ->enctype('multipart/form-data')
+            ->action(guard_url('block/category/'. $data['id']))!!}
 
+            @php
+            $form['fields'] = form_merge_form($form['fields'], compact('data', 'meta'));
+            $mode = 'edit';
+            @endphp
 
-    {!!Form::vertical_open()
-    ->method('PUT')
-    ->id('form-edit')
-    ->enctype('multipart/form-data')
-    ->action(guard_url('block/category/'. $data['id']))!!}
+            @include('block::category.partials.form')
+            {!!Form::close()!!}
+        </div>
 
-    @include('block::category.partial.entry', ['mode' => 'edit'])
-
-    {!!Form::close()!!}
+        @include('block::category.partials.aside')
+        </div>
+    </div>
 </div>

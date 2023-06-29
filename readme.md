@@ -2,86 +2,130 @@ Lavalite package that provides block management facility for the cms.
 
 ## Installation
 
-Begin by installing this package through Composer. Edit your project's `composer.json` file to require `litecms/block`.
+Run the below command form the root folder of lavalite.
 
-    "litecms/block": "dev-master"
+```
+    composer require "litecms/block"
+```
 
-Next, update Composer from the Terminal:
 
-    composer update
+## Migration and seeds
 
-Once this operation completes execute below cammnds in command line to finalize installation.
-
-    Litecms\Block\Providers\BlockServiceProvider::class,
-
-And also add it to alias
-
-    'Block'  => Litecms\Block\Facades\Block::class,
-
-## Publishing files and migraiting database.
-
-**Migration and seeds**
-
+```
     php artisan migrate
-    php artisan db:seed --class=Litecms\\Block\\Seeds\\BlockTableSeeder
-    php artisan db:seed --class=Litecms\\Block\\Seeds\\CategoryTableSeeder
+    php artisan db:seed --class=Litecms\\Block\\Seeders\\BlockTableSeeder
+```
 
-**Publishing configuration**
+## Publishing
 
+* Configuration
+```
     php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="config"
-
-**Publishing language**
-
+```
+* Language
+```
     php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="lang"
-
-**Publishing views**
-
+```
+* Views
+```
     php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="view"
+```
+
+
+## URLs and APIs
 
 
 ### Web Urls
 
-**Admin**
-
+* Admin
+```
     http://path-to-route-folder/admin/block/{modulename}
+```
 
-**User**
-
+* User
+```
     http://path-to-route-folder/user/block/{modulename}
+```
 
-**Public**
-
+* Public
+```
     http://path-to-route-folder/blocks
+```
 
 
 ### API endpoints
 
-**List**
+These endpoints can be used with or without `/api/`
+And also the user can be varied depend on the type of users, eg user, client, admin etc.
 
+#### Resource
+
+* List
+```
     http://path-to-route-folder/api/user/block/{modulename}
     METHOD: GET
+```
 
-**Create**
-
+* Create
+```
     http://path-to-route-folder/api/user/block/{modulename}
     METHOD: POST
+```
 
-**Edit**
-
+* Edit
+```
     http://path-to-route-folder/api/user/block/{modulename}/{id}
     METHOD: PUT
+```
 
-**Delete**
-
+* Delete
+```
     http://path-to-route-folder/api/user/block/{modulename}/{id}
     METHOD: DELETE
+```
 
-**Public List**
+#### Public
 
+* List
+```
     http://path-to-route-folder/api/block/{modulename}
     METHOD: GET
+```
 
-**Public Single**
-
+* Single Item
+```
     http://path-to-route-folder/api/block/{modulename}/{slug}
     METHOD: GET
+```
+
+#### Others
+
+* Report
+```
+    http://path-to-route-folder/api/user/block/{modulename}/report/{report}
+    METHOD: GET
+```
+
+* Export/Import
+```
+    http://path-to-route-folder/api/user/block/{modulename}/exim/{exim}
+    METHOD: POST
+```
+
+* Action
+```
+    http://path-to-route-folder/api/user/block/{modulename}/action/{id}/{action}
+    METHOD: PATCH
+```
+
+* Actions
+```
+    http://path-to-route-folder/api/user/block/{modulename}/actions/{action}
+    METHOD: PATCH
+```
+
+* Workflow
+```
+    http://path-to-route-folder/api/user/block/{modulename}/workflow/{id}/{transition}
+    METHOD: PATCH
+```

@@ -3,8 +3,8 @@
 namespace Litecms\Block\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Routing\Router;
 use Litecms\Block\Models\Block;
+use Litecms\Block\Models\Category;
 
 use Request;
 use Route;
@@ -32,14 +32,12 @@ class RouteServiceProvider extends ServiceProvider
 
         if (Request::is('*/block/block/*')) {
             Route::bind('block', function ($block) {
-                $blockRepo = $this->app->make('Litecms\Block\Interfaces\BlockRepositoryInterface');
-                return $blockRepo->findorNew($block);
+                return Block::findorNew($block);
             });
         }
         if (Request::is('*/block/category/*')) {
             Route::bind('category', function ($category) {
-                $categoryRepo = $this->app->make('Litecms\Block\Interfaces\CategoryRepositoryInterface');
-                return $categoryRepo->findorNew($category);
+                return Category::findorNew($category);
             });
         }
 

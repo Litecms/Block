@@ -14,9 +14,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // Bind Block policy
-        \Litecms\Block\Repositories\Eloquent\BlockRepository::class 
+        \Litecms\Block\Models\Block::class 
         => \Litecms\Block\Policies\BlockPolicy::class,// Bind Category policy
-        \Litecms\Block\Repositories\Eloquent\CategoryRepository::class 
+        \Litecms\Block\Models\Category::class 
         => \Litecms\Block\Policies\CategoryPolicy::class,
     ];
 

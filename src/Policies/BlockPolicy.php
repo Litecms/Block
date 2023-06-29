@@ -2,23 +2,25 @@
 
 namespace Litecms\Block\Policies;
 
-use Litepie\User\Contracts\UserPolicy;
+use Litepie\User\Interfaces\UserPolicyInterface;
 use Litecms\Block\Models\Block;
 
 class BlockPolicy
 {
 
+    use BlockWorkflow;
+
     /**
      * Determine if the given user can view the block.
      *
-     * @param UserPolicy $user
+     * @param UserPolicyInterface $authUser
      * @param Block $block
      *
      * @return bool
      */
-    public function view(UserPolicy $user, Block $block)
+    public function view(UserPolicyInterface $authUser, Block $block)
     {
-        if ($user->canDo('block.block.view') && $user->isAdmin()) {
+        if ($authUser->canDo('block.block.view') && $authUser->isAdmin()) {
             return true;
         }
 
@@ -28,27 +30,26 @@ class BlockPolicy
     /**
      * Determine if the given user can create a block.
      *
-     * @param UserPolicy $user
-     * @param Block $block
+     * @param UserPolicyInterface $authUser
      *
      * @return bool
      */
-    public function create(UserPolicy $user)
+    public function create(UserPolicyInterface $authUser)
     {
-        return  $user->canDo('block.block.create');
+        return  $authUser->canDo('block.block.create');
     }
 
     /**
      * Determine if the given user can update the given block.
      *
-     * @param UserPolicy $user
+     * @param UserPolicyInterface $authUser
      * @param Block $block
      *
      * @return bool
      */
-    public function update(UserPolicy $user, Block $block)
+    public function update(UserPolicyInterface $authUser, Block $block)
     {
-        if ($user->canDo('block.block.edit') && $user->isAdmin()) {
+        if ($authUser->canDo('block.block.edit') && $authUser->isAdmin()) {
             return true;
         }
 
@@ -58,27 +59,58 @@ class BlockPolicy
     /**
      * Determine if the given user can delete the given block.
      *
-     * @param UserPolicy $user
-     * @param Block $block
+     * @param UserPolicyInterface $authUser
      *
      * @return bool
      */
-    public function destroy(UserPolicy $user, Block $block)
+    public function destroy(UserPolicyInterface $authUser, Block $block)
     {
         return $block->user_id == user_id() && $block->user_type == user_type();
     }
 
     /**
+     * Determine if the given user can verify the given block.
+     *
+     * @param UserPolicyInterface $authUser
+     *
+     * @return bool
+     */
+    public function verify(UserPolicyInterface $authUser, Block $block)
+    {
+        if ($authUser->canDo('block.block.verify')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine if the given user can approve the given block.
+     *
+     * @param UserPolicyInterface $authUser
+     *
+     * @return bool
+     */
+    public function approve(UserPolicyInterface $authUser, Block $block)
+    {
+        if ($authUser->canDo('block.block.approve')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determine if the user can perform a given action ve.
      *
-     * @param [type] $user    [description]
+     * @param [type] $authUser    [description]
      * @param [type] $ability [description]
      *
      * @return [type] [description]
      */
-    public function before($user, $ability)
+    public function before($authUser, $ability)
     {
-        if ($user->isSuperuser()) {
+        if ($authUser->isSuperuser()) {
             return true;
         }
     }
