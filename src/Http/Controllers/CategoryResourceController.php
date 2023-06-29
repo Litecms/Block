@@ -3,13 +3,14 @@
 namespace Litecms\Block\Http\Controllers;
 
 use Exception;
-use Litepie\Http\Controllers\ResourceController as BaseController;
-use Litepie\Repository\Filter\RequestFilter;
+use Litecms\Block\Actions\CategoryAction;
+use Litecms\Block\Actions\CategoryActions;
 use Litecms\Block\Forms\Category as CategoryForm;
-use Litecms\Block\Http\Requests\CategoryRequest;
-use Litecms\Block\Interfaces\CategoryRepositoryInterface;
-use Litecms\Block\Repositories\Eloquent\Filters\CategoryResourceFilter;
-use Litecms\Block\Repositories\Eloquent\Presenters\CategoryListPresenter;
+use Litecms\Block\Http\Requests\CategoryResourceRequest;
+use Litecms\Block\Http\Resources\CategoriesCollection;
+use Litecms\Block\Http\Resources\CategoryResource;
+use Litecms\Block\Models\Category;
+use Litepie\Http\Controllers\ResourceController as BaseController;
 
 /**
  * Resource controller class for category.
@@ -23,12 +24,16 @@ class CategoryResourceController extends BaseController
      *
      * @return null
      */
-    public function __construct(CategoryRepositoryInterface $category)
+    public function __construct()
     {
         parent::__construct();
-        $this->form = CategoryForm::setAttributes()->toArray();
-        $this->modules = $this->modules(config('litecms.block.modules'), 'block', guard_url('block'));
-        $this->repository = $category;
+        $this->middleware(function ($request, $next) {
+            $this->form = CategoryForm::grouped(false)
+                ->setAttributes()
+                ->toArray();
+            $this->modules = $this->modules(config('litecms.block.modules'), 'block', guard_url('block'));
+            return $next($request);
+        });
     }
 
     /**
@@ -36,26 +41,21 @@ class CategoryResourceController extends BaseController
      *
      * @return Response
      */
-    public function index(CategoryRequest $request)
+    public function index(CategoryResourceRequest $request)
     {
+        $request = $request->all();
+        $page = CategoryActions::run('paginate', $request);
 
-        $pageLimit = $request->input('pageLimit', config('database.pagination.limit'));
-        $data = $this->repository
-            ->pushFilter(RequestFilter::class)
-            ->pushFilter(CategoryResourceFilter::class)
-            ->setPresenter(CategoryListPresenter::class)
-            ->simplePaginate($pageLimit)
-            // ->withQueryString()
-            ->toArray();
+        $data = new CategoriesCollection($page);
 
-        extract($data);
         $form = $this->form;
         $modules = $this->modules;
 
         return $this->response->setMetaTitle(trans('block::category.names'))
             ->view('block::category.index')
-            ->data(compact('data', 'meta', 'links', 'modules', 'form'))
+            ->data(compact('data', 'modules', 'form'))
             ->output();
+
     }
 
     /**
@@ -66,14 +66,14 @@ class CategoryResourceController extends BaseController
      *
      * @return Response
      */
-    public function show(CategoryRequest $request, CategoryRepositoryInterface $repository)
+    public function show(CategoryResourceRequest $request, Category $model)
     {
         $form = $this->form;
         $modules = $this->modules;
-        $data = $repository->toArray();
+        $data = new CategoryResource($model);
         return $this->response
             ->setMetaTitle(trans('app.view') . ' ' . trans('block::category.name'))
-            ->data(compact('data', 'form', 'modules', 'form'))
+            ->data(compact('data', 'form', 'modules'))
             ->view('block::category.show')
             ->output();
     }
@@ -82,18 +82,19 @@ class CategoryResourceController extends BaseController
      * Show the form for creating a new category.
      *
      * @param Request $request
-     *x
+     *
      * @return Response
      */
-    public function create(CategoryRequest $request, CategoryRepositoryInterface $repository)
+    public function create(CategoryResourceRequest $request, Category $model)
     {
         $form = $this->form;
         $modules = $this->modules;
-        $data = $repository->toArray();
+        $data = new CategoryResource($model);
         return $this->response->setMetaTitle(trans('app.new') . ' ' . trans('block::category.name'))
             ->view('block::category.create')
             ->data(compact('data', 'form', 'modules'))
             ->output();
+
     }
 
     /**
@@ -103,20 +104,17 @@ class CategoryResourceController extends BaseController
      *
      * @return Response
      */
-    public function store(CategoryRequest $request, CategoryRepositoryInterface $repository)
+    public function store(CategoryResourceRequest $request, Category $model)
     {
         try {
-            $attributes = $request->all();
-            $attributes['user_id'] = user_id();
-            $attributes['user_type'] = user_type();
-            $repository->create($attributes);
-            $data = $repository->toArray();
-
+            $request = $request->all();
+            $model = CategoryAction::run('store', $model, $request);
+            $data = new CategoryResource($model);
             return $this->response->message(trans('messages.success.created', ['Module' => trans('block::category.name')]))
                 ->code(204)
                 ->data(compact('data'))
                 ->status('success')
-                ->url(guard_url('block/category/' . $data['id']))
+                ->url(guard_url('block/category/' . $model->getRouteKey()))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
@@ -136,16 +134,18 @@ class CategoryResourceController extends BaseController
      *
      * @return Response
      */
-    public function edit(CategoryRequest $request, CategoryRepositoryInterface $repository)
+    public function edit(CategoryResourceRequest $request, Category $model)
     {
         $form = $this->form;
         $modules = $this->modules;
-        $data = $repository->toArray();
+        $data = new CategoryResource($model);
+        // return view('block::category.edit', compact('data', 'form', 'modules'));
 
         return $this->response->setMetaTitle(trans('app.edit') . ' ' . trans('block::category.name'))
             ->view('block::category.edit')
             ->data(compact('data', 'form', 'modules'))
             ->output();
+
     }
 
     /**
@@ -156,24 +156,24 @@ class CategoryResourceController extends BaseController
      *
      * @return Response
      */
-    public function update(CategoryRequest $request, CategoryRepositoryInterface $repository)
+    public function update(CategoryResourceRequest $request, Category $model)
     {
         try {
-            $attributes = $request->all();
-            $repository->update($attributes);
-            $data = $repository->toArray();
+            $request = $request->all();
+            $model = CategoryAction::run('update', $model, $request);
+            $data = new CategoryResource($model);
 
             return $this->response->message(trans('messages.success.updated', ['Module' => trans('block::category.name')]))
                 ->code(204)
                 ->status('success')
                 ->data(compact('data'))
-                ->url(guard_url('block/category/' . $data['id']))
+                ->url(guard_url('block/category/' . $model->getRouteKey()))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('block/category/' . $data['id']))
+                ->url(guard_url('block/category/' . $model->getRouteKey()))
                 ->redirect();
         }
 
@@ -186,11 +186,13 @@ class CategoryResourceController extends BaseController
      *
      * @return Response
      */
-    public function destroy(CategoryRequest $request, CategoryRepositoryInterface $repository)
+    public function destroy(CategoryResourceRequest $request, Category $model)
     {
         try {
-            $repository->delete();
-            $data = $repository->toArray();
+
+            $request = $request->all();
+            $model = CategoryAction::run('destroy', $model, $request);
+            $data = new CategoryResource($model);
 
             return $this->response->message(trans('messages.success.deleted', ['Module' => trans('block::category.name')]))
                 ->code(202)
@@ -204,7 +206,7 @@ class CategoryResourceController extends BaseController
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('block/category/' . $data['id']))
+                ->url(guard_url('block/category/' . $model->getRouteKey()))
                 ->redirect();
         }
 

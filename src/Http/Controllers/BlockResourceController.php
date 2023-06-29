@@ -3,13 +3,14 @@
 namespace Litecms\Block\Http\Controllers;
 
 use Exception;
-use Litepie\Http\Controllers\ResourceController as BaseController;
-use Litepie\Repository\Filter\RequestFilter;
+use Litecms\Block\Actions\BlockAction;
+use Litecms\Block\Actions\BlockActions;
 use Litecms\Block\Forms\Block as BlockForm;
-use Litecms\Block\Http\Requests\BlockRequest;
-use Litecms\Block\Interfaces\BlockRepositoryInterface;
-use Litecms\Block\Repositories\Eloquent\Filters\BlockResourceFilter;
-use Litecms\Block\Repositories\Eloquent\Presenters\BlockListPresenter;
+use Litecms\Block\Http\Requests\BlockResourceRequest;
+use Litecms\Block\Http\Resources\BlockResource;
+use Litecms\Block\Http\Resources\BlocksCollection;
+use Litecms\Block\Models\Block;
+use Litepie\Http\Controllers\ResourceController as BaseController;
 
 /**
  * Resource controller class for block.
@@ -23,12 +24,16 @@ class BlockResourceController extends BaseController
      *
      * @return null
      */
-    public function __construct(BlockRepositoryInterface $block)
+    public function __construct()
     {
         parent::__construct();
-        $this->form = BlockForm::setAttributes()->toArray();
-        $this->modules = $this->modules(config('litecms.block.modules'), 'block', guard_url('block'));
-        $this->repository = $block;
+        $this->middleware(function ($request, $next) {
+            $this->form = BlockForm::grouped(false)
+                ->setAttributes()
+                ->toArray();
+            $this->modules = $this->modules(config('litecms.block.modules'), 'block', guard_url('block'));
+            return $next($request);
+        });
     }
 
     /**
@@ -36,25 +41,21 @@ class BlockResourceController extends BaseController
      *
      * @return Response
      */
-    public function index(BlockRequest $request)
+    public function index(BlockResourceRequest $request)
     {
+        $request = $request->all();
+        $page = BlockActions::run('paginate', $request);
 
-        $pageLimit = $request->input('pageLimit', config('database.pagination.limit'));
-        $data = $this->repository
-            ->pushFilter(RequestFilter::class)
-            ->pushFilter(BlockResourceFilter::class)
-            ->setPresenter(BlockListPresenter::class)
-            ->simplePaginate($pageLimit)
-            // ->withQueryString()
-            ->toArray();
+        $data = new BlocksCollection($page);
 
-        extract($data);
         $form = $this->form;
         $modules = $this->modules;
+
         return $this->response->setMetaTitle(trans('block::block.names'))
             ->view('block::block.index')
-            ->data(compact('data', 'meta', 'links', 'modules', 'form'))
+            ->data(compact('data', 'modules', 'form'))
             ->output();
+
     }
 
     /**
@@ -65,14 +66,14 @@ class BlockResourceController extends BaseController
      *
      * @return Response
      */
-    public function show(BlockRequest $request, BlockRepositoryInterface $repository)
+    public function show(BlockResourceRequest $request, Block $model)
     {
         $form = $this->form;
         $modules = $this->modules;
-        $data = $repository->toArray();
+        $data = new BlockResource($model);
         return $this->response
             ->setMetaTitle(trans('app.view') . ' ' . trans('block::block.name'))
-            ->data(compact('data', 'form', 'modules', 'form'))
+            ->data(compact('data', 'form', 'modules'))
             ->view('block::block.show')
             ->output();
     }
@@ -81,18 +82,19 @@ class BlockResourceController extends BaseController
      * Show the form for creating a new block.
      *
      * @param Request $request
-     *x
+     *
      * @return Response
      */
-    public function create(BlockRequest $request, BlockRepositoryInterface $repository)
+    public function create(BlockResourceRequest $request, Block $model)
     {
         $form = $this->form;
         $modules = $this->modules;
-        $data = $repository->toArray();
+        $data = new BlockResource($model);
         return $this->response->setMetaTitle(trans('app.new') . ' ' . trans('block::block.name'))
             ->view('block::block.create')
             ->data(compact('data', 'form', 'modules'))
             ->output();
+
     }
 
     /**
@@ -102,20 +104,17 @@ class BlockResourceController extends BaseController
      *
      * @return Response
      */
-    public function store(BlockRequest $request, BlockRepositoryInterface $repository)
+    public function store(BlockResourceRequest $request, Block $model)
     {
         try {
-            $attributes = $request->all();
-            $attributes['user_id'] = user_id();
-            $attributes['user_type'] = user_type();
-            $repository->create($attributes);
-            $data = $repository->toArray();
-
+            $request = $request->all();
+            $model = BlockAction::run('store', $model, $request);
+            $data = new BlockResource($model);
             return $this->response->message(trans('messages.success.created', ['Module' => trans('block::block.name')]))
                 ->code(204)
                 ->data(compact('data'))
                 ->status('success')
-                ->url(guard_url('block/block/' . $data['id']))
+                ->url(guard_url('block/block/' . $model->getRouteKey()))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
@@ -135,16 +134,18 @@ class BlockResourceController extends BaseController
      *
      * @return Response
      */
-    public function edit(BlockRequest $request, BlockRepositoryInterface $repository)
+    public function edit(BlockResourceRequest $request, Block $model)
     {
         $form = $this->form;
         $modules = $this->modules;
-        $data = $repository->toArray();
+        $data = new BlockResource($model);
+        // return view('block::block.edit', compact('data', 'form', 'modules'));
 
         return $this->response->setMetaTitle(trans('app.edit') . ' ' . trans('block::block.name'))
             ->view('block::block.edit')
             ->data(compact('data', 'form', 'modules'))
             ->output();
+
     }
 
     /**
@@ -155,24 +156,24 @@ class BlockResourceController extends BaseController
      *
      * @return Response
      */
-    public function update(BlockRequest $request, BlockRepositoryInterface $repository)
+    public function update(BlockResourceRequest $request, Block $model)
     {
         try {
-            $attributes = $request->all();
-            $repository->update($attributes);
-            $data = $repository->toArray();
+            $request = $request->all();
+            $model = BlockAction::run('update', $model, $request);
+            $data = new BlockResource($model);
 
             return $this->response->message(trans('messages.success.updated', ['Module' => trans('block::block.name')]))
                 ->code(204)
                 ->status('success')
                 ->data(compact('data'))
-                ->url(guard_url('block/block/' . $data['id']))
+                ->url(guard_url('block/block/' . $model->getRouteKey()))
                 ->redirect();
         } catch (Exception $e) {
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('block/block/' . $data['id']))
+                ->url(guard_url('block/block/' . $model->getRouteKey()))
                 ->redirect();
         }
 
@@ -185,11 +186,13 @@ class BlockResourceController extends BaseController
      *
      * @return Response
      */
-    public function destroy(BlockRequest $request, BlockRepositoryInterface $repository)
+    public function destroy(BlockResourceRequest $request, Block $model)
     {
         try {
-            $repository->delete();
-            $data = $repository->toArray();
+
+            $request = $request->all();
+            $model = BlockAction::run('destroy', $model, $request);
+            $data = new BlockResource($model);
 
             return $this->response->message(trans('messages.success.deleted', ['Module' => trans('block::block.name')]))
                 ->code(202)
@@ -203,7 +206,7 @@ class BlockResourceController extends BaseController
             return $this->response->message($e->getMessage())
                 ->code(400)
                 ->status('error')
-                ->url(guard_url('block/block/' . $data['id']))
+                ->url(guard_url('block/block/' . $model->getRouteKey()))
                 ->redirect();
         }
 

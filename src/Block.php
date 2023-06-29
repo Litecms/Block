@@ -2,61 +2,30 @@
 
 namespace Litecms\Block;
 
+use Litecms\Block\Actions\BlockActions;
+use Litecms\Block\Actions\CategoryActions;
+
 class Block
 {
     /**
-     * Category repository object.
+     * Return select options block for the module.
+     *
+     * @param string $module
+     * @param array $request
+     *
+     * @return array
      */
-    protected $category;
-
-    /**
-     * Block repository object.
-     */
-    protected $block;
-
-    /**
-     * Constructor.
-     */
-    public function __construct(
-        \Litecms\Block\Interfaces\CategoryRepositoryInterface $category,
-        \Litecms\Block\Interfaces\BlockRepositoryInterface $block
-    ) {
-        $this->category = $category;
-        $this->block = $block;
-    }
-
-    /**
-     * take latest blocks for public side
-     * @param type $count
-     * @param type|string $view
-     * @return type
-     */
-
-    public function display($category)
+    public function options($module = 'block', $request = []) :array
     {
+        if ($module == 'block') {
+            return BlockActions::run('options', $request);
+        }
 
-        $view = (view()->exists("block::public.{$category}")) ? "block::public.{$category}" : "block::public.default";
+        if ($module == 'category') {
+            return CategoryActions::run('options', $request);
+        }
 
-        $category = $this->category
-            ->scopeQuery(function ($query) use ($category) {
-                return $query->with('blocks')->whereSlug($category);
-            })->first();
+        return [];
 
-        $blocks = $category->blocks;
-        return view($view, compact('blocks', 'category'))->render();
-    }
-
-    /**
-     * take latest blocks for public side
-     * @param type $count
-     * @param type|string $view
-     * @return type
-     */
-
-    public function categoryOptions($key, $value)
-    {
-        return $this->category
-            ->resetRepository()
-            ->options($key, $value);
     }
 }

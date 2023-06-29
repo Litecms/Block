@@ -14,18 +14,16 @@ return [
     /**
      * Singlular and plural name of the module
      */
-    'name'          => 'Block',
-    'names'         => 'Blocks',
-    
+    'name' => 'Block',
+    'names' => 'Blocks',
+    'icon' => 'las la-list',
+
     /**
      * Singlular and plural name of the module
      */
-    'title'         => [
-        'main'  => 'Blocks',
-        'sub'   => 'Blocks',
-        'list'  => 'List of blocks',
-        'edit'  => 'Edit block',
-        'create'    => 'Create new block'
+    'title' => [
+        'main' => 'Blocks',
+        'sub' => 'Blocks'
     ],
 
     /**
@@ -39,10 +37,33 @@ return [
     ],
 
     /**
+     * Form sub section name for the module.
+     */
+    'sections' => [
+        'main' => 'Main',
+        'details' => 'Details',
+    ],
+
+    /**
      * Options for select/radio/check.
      */
     'options'       => [
-        'status'              => ['show','hide'],
+        'status' => 
+            [
+                                
+                [
+                    'key'    => 'show',
+                    'value'  => 'show',
+                    'text'   => 'show',
+                ],
+                                
+                [
+                    'key'    => 'hide',
+                    'value'  => 'hide',
+                    'text'   => 'hide',
+                ],
+                                
+            ],
     ],
 
     /**
@@ -90,4 +111,46 @@ return [
         'created_at'                 => 'Created at',
         'updated_at'                 => 'Updated at',
     ],
-];
+
+        /**
+     * Label for workflows.
+     */
+    'workflow' => [
+        'submit' => [
+            'label' => 'Submit',
+            'icon' => 'save',
+            'varient' => 'outline',
+        ],
+        'approve' => [
+            'label' => 'Approve',
+            'icon' => 'save',
+            'varient' => 'outline',
+        ],
+        'reject' => [
+            'label' => 'Reject',
+            'icon' => 'save',
+            'varient' => 'danger',
+        ],
+        'publish' => [
+            'label' => 'Publish',
+            'icon' => 'save',
+            'varient' => 'outline',
+        ],
+        'unpublish' => [
+            'label' => 'Unpublish',
+            'icon' => 'save',
+            'varient' => 'outline',
+        ],
+        'archive' => [
+            'label' => 'Archive',
+            'icon' => 'save',
+            'varient' => 'danger',
+        ],
+        'unarchive' => [
+            'label' => 'Unarchive',
+            'icon' => 'save',
+            'varient' => 'outline',
+        ],
+    ],
+    
+    ];

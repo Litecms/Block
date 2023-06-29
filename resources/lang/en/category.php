@@ -14,18 +14,16 @@ return [
     /**
      * Singlular and plural name of the module
      */
-    'name'          => 'Category',
-    'names'         => 'Categories',
-    
+    'name' => 'Category',
+    'names' => 'Categories',
+    'icon' => 'las la-list',
+
     /**
      * Singlular and plural name of the module
      */
-    'title'         => [
-        'main'  => 'Categories',
-        'sub'   => 'Categories',
-        'list'  => 'List of categories',
-        'edit'  => 'Edit category',
-        'create'    => 'Create new category'
+    'title' => [
+        'main' => 'Categories',
+        'sub' => 'Categories'
     ],
 
     /**
@@ -39,10 +37,33 @@ return [
     ],
 
     /**
+     * Form sub section name for the module.
+     */
+    'sections' => [
+        'main' => 'Main',
+        'details' => 'Details',
+    ],
+
+    /**
      * Options for select/radio/check.
      */
     'options'       => [
-        'status'              => ['show','hide'],
+        'status' => 
+            [
+                                
+                [
+                    'key'    => 'show',
+                    'value'  => 'show',
+                    'text'   => 'show',
+                ],
+                                
+                [
+                    'key'    => 'hide',
+                    'value'  => 'hide',
+                    'text'   => 'hide',
+                ],
+                                
+            ],
     ],
 
     /**
@@ -82,4 +103,6 @@ return [
         'created_at'                 => 'Created at',
         'updated_at'                 => 'Updated at',
     ],
-];
+
+    
+    ];

@@ -44,13 +44,11 @@ class BlockServiceProvider extends ServiceProvider
     {
         $this->mergeConfig();
         $this->registerFacade();
-        $this->registerBindings();
-        //$this->registerCommands();
+        // $this->registerCommands();
 
         $this->app->register(\Litecms\Block\Providers\AuthServiceProvider::class);
         $this->app->register(\Litecms\Block\Providers\RouteServiceProvider::class);
-        // $this->app->register(\Litecms\Block\Providers\EventServiceProvider::class);
-        // $this->app->register(\Litecms\Block\Providers\WorkflowServiceProvider::class);
+        $this->app->register(\Litecms\Block\Providers\WorkflowServiceProvider::class);
     }
 
     /**
@@ -66,24 +64,6 @@ class BlockServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the bindings for the service provider.
-     *
-     * @return void
-     */
-    public function registerBindings() {
-        // Bind Block to repository
-        $this->app->bind(
-            'Litecms\Block\Interfaces\BlockRepositoryInterface',
-            \Litecms\Block\Repositories\Eloquent\BlockRepository::class
-        );        // Bind Category to repository
-        $this->app->bind(
-            'Litecms\Block\Interfaces\CategoryRepositoryInterface',
-            \Litecms\Block\Repositories\Eloquent\CategoryRepository::class
-        );
-    }
-
-
-    /**
      * Merges user's and block's configs.
      *
      * @return void
@@ -92,6 +72,13 @@ class BlockServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(
             __DIR__ . '/../../config/config.php', 'litecms.block'
+        );
+        
+        $this->mergeConfigFrom(
+            __DIR__ . '/../../config/block.php', 'litecms.block.block'
+        );
+        $this->mergeConfigFrom(
+            __DIR__ . '/../../config/category.php', 'litecms.block.category'
         );
     }
 
@@ -106,6 +93,7 @@ class BlockServiceProvider extends ServiceProvider
             ]);
         }
     }
+
     /**
      * Get the services provided by the provider.
      *
@@ -124,7 +112,7 @@ class BlockServiceProvider extends ServiceProvider
     private function publishResources()
     {
         // Publish configuration file
-        $this->publishes([__DIR__ . '/../../config/config.php' => config_path('litecms/block.php')], 'config');
+        $this->publishes([__DIR__ . '/../../config/' => config_path('litecms/block')], 'config');
 
         // Publish admin view
         $this->publishes([__DIR__ . '/../../resources/views' => base_path('resources/views/vendor/block')], 'view');

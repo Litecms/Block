@@ -1,6 +1,6 @@
 # Installation
 
-The instructions below will help you to properly install the generated package to the lavalite project.
+The instructions below will help you to properly installand run the generated package to the lavalite project.
 
 ## Location
 
@@ -10,132 +10,143 @@ Extract the package contents to the folder
 
 ## Composer
 
-Add the below entries in the `composer.json` file's autoload section and run the command `composer dump-autoload` in terminal.
+Add the below entries in the `composer.json`.
+
 
 ```json
 
 ...
-     "autoload": {
-         ...
+     "repositories": {
+        ...
 
-        "classmap": [
-            ...
-            
-            "packages/litecms/block/database/seeds",
-            
-            ...
-        ],
-        "psr-4": {
-            ...
-            
-            "Litecms\\Block\\": "packages/litecms/block/src",
-            
-            ...
+        {
+            "type": "path",
+            "url": "packages/litecms/block"
         }
+
+        ...
     },
 ...
 
 ```
+Then run `composer require litecms/block`
 
-## Config
 
-Add the entries in service provider in `config/app.php`
-
-```php
-
-...
-    'providers'       => [
-        ...
-        
-        Litecms\Block\Providers\BlockServiceProvider::class,
-        
-        ...
-    ],
-
-    ...
-
-    'alias'             => [
-        ...
-        
-        'Block'  => Litecms\Block\Facades\Block::class,
-        
-        ...
-    ]
-...
+## Migration and seeds
 
 ```
-
-## Migrate
-
-After service provider is set run the commapnd to migrate and seed the database.
-
-
     php artisan migrate
-    php artisan db:seed --class=Litecms\\Block\\Seeds\\BlockTableSeeder
-    php artisan db:seed --class=Litecms\\Block\\Seeds\\CategoryTableSeeder
+    php artisan db:seed --class=Litecms\\Block\\Seeders\\BlockTableSeeder
+```
 
 ## Publishing
 
-
-**Publishing configuration**
-
+* Configuration
+```
     php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="config"
-
-**Publishing language**
-
+```
+* Language
+```
     php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="lang"
-
-**Publishing views**
-
+```
+* Views
+```
     php artisan vendor:publish --provider="Litecms\Block\Providers\BlockServiceProvider" --tag="view"
-
+```
 
 ## URLs and APIs
 
-
 ### Web Urls
 
-**Admin**
-
+* Admin
+```
     http://path-to-route-folder/admin/block/{modulename}
+```
 
-**User**
-
+* User
+```
     http://path-to-route-folder/user/block/{modulename}
+```
 
-**Public**
-
+* Public
+```
     http://path-to-route-folder/blocks
+```
 
 
 ### API endpoints
 
-**List**
- 
+These endpoints can be used with or without `/api/`
+And also the user can be varied depend on the type of users, eg user, client, admin etc.
+
+#### Resource
+
+* List
+```
     http://path-to-route-folder/api/user/block/{modulename}
     METHOD: GET
+```
 
-**Create**
-
+* Create
+```
     http://path-to-route-folder/api/user/block/{modulename}
     METHOD: POST
+```
 
-**Edit**
-
+* Edit
+```
     http://path-to-route-folder/api/user/block/{modulename}/{id}
     METHOD: PUT
+```
 
-**Delete**
-
+* Delete
+```
     http://path-to-route-folder/api/user/block/{modulename}/{id}
     METHOD: DELETE
+```
 
-**Public List**
+#### Public
 
+* List
+```
     http://path-to-route-folder/api/block/{modulename}
     METHOD: GET
+```
 
-**Public Single**
-
+* Single Item
+```
     http://path-to-route-folder/api/block/{modulename}/{slug}
     METHOD: GET
+```
+
+#### Others
+
+* Report
+```
+    http://path-to-route-folder/api/user/block/{modulename}/report/{report}
+    METHOD: GET
+```
+
+* Export/Import
+```
+    http://path-to-route-folder/api/user/block/{modulename}/exim/{exim}
+    METHOD: POST
+```
+
+* Action
+```
+    http://path-to-route-folder/api/user/block/{modulename}/action/{id}/{action}
+    METHOD: PATCH
+```
+
+* Actions
+```
+    http://path-to-route-folder/api/user/block/{modulename}/actions/{action}
+    METHOD: PATCH
+```
+
+* Workflow
+```
+    http://path-to-route-folder/api/user/block/{modulename}/workflow/{id}/{transition}
+    METHOD: PATCH
+```
