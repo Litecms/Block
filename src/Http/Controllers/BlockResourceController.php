@@ -28,7 +28,7 @@ class BlockResourceController extends BaseController
     {
         parent::__construct();
         $this->middleware(function ($request, $next) {
-            $this->form = BlockForm::grouped(false)
+            $this->form = BlockForm::only('main')
                 ->setAttributes()
                 ->toArray();
             $this->modules = $this->modules(config('litecms.block.modules'), 'block', guard_url('block'));

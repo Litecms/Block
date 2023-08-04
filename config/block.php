@@ -115,7 +115,7 @@ return
                 "label" => 'block::block.label.name',
                 "placeholder" => 'block::block.placeholder.name',
                 "rules" => '',
-                "group" => "main",
+                "group" => "main.main",
                 "section" => "first",
                 "col" => "6",
                 "append" => null,
@@ -135,7 +135,7 @@ return
                 "label" => 'block::block.label.url',
                 "placeholder" => 'block::block.placeholder.url',
                 "rules" => '',
-                "group" => "main",
+                "group" => "main.main",
                 "section" => "first",
                 "col" => "6",
                 "append" => null,
@@ -158,7 +158,7 @@ return
                 "options" => function(){
                     return trans('block::block.options.category_id');
                 },
-                "group" => "main",
+                "group" => "main.main",
                 "section" => "first",
                 "col" => "6",
                 "append" => null,
@@ -178,7 +178,7 @@ return
                 "label" => 'block::block.label.icon',
                 "placeholder" => 'block::block.placeholder.icon',
                 "rules" => '',
-                "group" => "main",
+                "group" => "main.main",
                 "section" => "first",
                 "col" => "6",
                 "append" => null,
@@ -198,7 +198,7 @@ return
                 "label" => 'block::block.label.description',
                 "placeholder" => 'block::block.placeholder.description',
                 "rules" => '',
-                "group" => "main",
+                "group" => "main.main",
                 "section" => "first",
                 "col" => "6",
                 "append" => null,
@@ -218,7 +218,7 @@ return
                 "label" => 'block::block.label.image',
                 "placeholder" => 'block::block.placeholder.image',
                 "rules" => '',
-                "group" => "main",
+                "group" => "main.main",
                 "section" => "first",
                 "col" => "12",
                 "append" => null,
@@ -238,7 +238,7 @@ return
                 "label" => 'block::block.label.images',
                 "placeholder" => 'block::block.placeholder.images',
                 "rules" => '',
-                "group" => "main",
+                "group" => "main.main",
                 "section" => "first",
                 "col" => "12",
                 "append" => null,
@@ -258,7 +258,7 @@ return
                 "label" => 'block::block.label.order',
                 "placeholder" => 'block::block.placeholder.order',
                 "rules" => '',
-                "group" => "main",
+                "group" => "main.main",
                 "section" => "first",
                 "col" => "6",
                 "append" => null,
@@ -305,28 +305,28 @@ return
             'status' => 'block::block.label.status',
         ],
         'groups' => [
-            'main' => [
+            [
                 'icon' => "mdi:account-supervisor-outline",
                 'name' => "block::block.groups.main",
-                'key' => "main",
+                'group' => "main.main",
                 'title' => "block::block.groups.main",
             ],
-            'details' => [
+            [
                 'icon' => "fe:home",
                 'name' => "block::block.groups.details",
-                'key' => "documents",
+                'group' => "main.documents",
                 'title' => "block::block.groups.details",
             ],
-            'images' => [
+            [
                 'icon' => "fe:home",
                 'name' => "block::block.groups.images",
-                'key' => "documents",
+                'group' => "main.documents",
                 'title' => "block::block.groups.images",
             ],
-            'settings' => [
+            [
                 'icon' => "fe:home",
                 'name' => "block::block.groups.settings",
-                'key' => "documents",
+                'group' => "main.documents",
                 'title' => "block::block.groups.settings",
             ]
         ],

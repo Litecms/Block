@@ -28,7 +28,7 @@ class CategoryResourceController extends BaseController
     {
         parent::__construct();
         $this->middleware(function ($request, $next) {
-            $this->form = CategoryForm::grouped(false)
+            $this->form = CategoryForm::only('main')
                 ->setAttributes()
                 ->toArray();
             $this->modules = $this->modules(config('litecms.block.modules'), 'block', guard_url('block'));

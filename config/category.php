@@ -87,7 +87,7 @@ return
                 "label" => 'block::category.label.name',
                 "placeholder" => 'block::category.placeholder.name',
                 "rules" => '',
-                "group" => "main",
+                "group" => "main.main",
                 "section" => "first",
                 "col" => "12",
                 "append" => null,
@@ -107,7 +107,7 @@ return
                 "label" => 'block::category.label.title',
                 "placeholder" => 'block::category.placeholder.title',
                 "rules" => '',
-                "group" => "main",
+                "group" => "main.main",
                 "section" => "first",
                 "col" => "12",
                 "append" => null,
@@ -127,7 +127,7 @@ return
                 "label" => 'block::category.label.details',
                 "placeholder" => 'block::category.placeholder.details',
                 "rules" => '',
-                "group" => "main",
+                "group" => "main.main",
                 "section" => "first",
                 "col" => "12",
                 "append" => null,
@@ -147,7 +147,7 @@ return
                 "label" => 'block::category.label.image',
                 "placeholder" => 'block::category.placeholder.image',
                 "rules" => '',
-                "group" => "main",
+                "group" => "main.main",
                 "section" => "first",
                 "col" => "12",
                 "append" => null,
@@ -194,28 +194,28 @@ return
             'status' => 'block::category.label.status',
         ],
         'groups' => [
-            'main' => [
+            [
                 'icon' => "mdi:account-supervisor-outline",
                 'name' => "block::category.groups.main",
-                'key' => "main",
+                'group' => "main.main",
                 'title' => "block::category.groups.main",
             ],
-            'details' => [
+            [
                 'icon' => "fe:home",
                 'name' => "block::category.groups.details",
-                'key' => "documents",
+                'group' => "main.documents",
                 'title' => "block::category.groups.details",
             ],
-            'images' => [
+            [
                 'icon' => "fe:home",
                 'name' => "block::category.groups.images",
-                'key' => "documents",
+                'group' => "main.documents",
                 'title' => "block::category.groups.images",
             ],
-            'settings' => [
+            [
                 'icon' => "fe:home",
                 'name' => "block::category.groups.settings",
-                'key' => "documents",
+                'group' => "main.documents",
                 'title' => "block::category.groups.settings",
             ]
         ],

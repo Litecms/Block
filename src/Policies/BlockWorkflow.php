@@ -3,7 +3,7 @@
 namespace Litecms\Block\Policies;
 
 use Litecms\Block\Models\Block;
-use Litepie\User\Interfaces\UserPolicyInterface;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 trait BlockWorkflow
 {
@@ -11,13 +11,13 @@ trait BlockWorkflow
     /**
      * Determine if the given user can approve the given block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function approve(UserPolicyInterface $authUser, Block $block)
+    public function approve(Authenticatable $user, Block $block)
     {
-        if ($authUser->canDo('block.block.approve')) {
+        if ($user->canDo('block.block.approve')) {
             return true;
         }
 
@@ -27,13 +27,13 @@ trait BlockWorkflow
     /**
      * Determine if the given user can approve the given block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function submit(UserPolicyInterface $authUser, Block $block)
+    public function submit(Authenticatable $user, Block $block)
     {
-        if ($authUser->canDo('block.block.submit')) {
+        if ($user->canDo('block.block.submit')) {
             return true;
         }
 
@@ -43,13 +43,13 @@ trait BlockWorkflow
     /**
      * Determine if the given user can approve the given block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function publish(UserPolicyInterface $authUser, Block $block)
+    public function publish(Authenticatable $user, Block $block)
     {
-        if ($authUser->canDo('block.block.publish')) {
+        if ($user->canDo('block.block.publish')) {
             return true;
         }
 
@@ -59,13 +59,13 @@ trait BlockWorkflow
     /**
      * Determine if the given user can approve the given block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function unpublish(UserPolicyInterface $authUser, Block $block)
+    public function unpublish(Authenticatable $user, Block $block)
     {
-        if ($authUser->canDo('block.block.unpublish')) {
+        if ($user->canDo('block.block.unpublish')) {
             return true;
         }
 
@@ -75,13 +75,13 @@ trait BlockWorkflow
     /**
      * Determine if the given user can approve the given block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function archive(UserPolicyInterface $authUser, Block $block)
+    public function archive(Authenticatable $user, Block $block)
     {
-        if ($authUser->canDo('block.block.archive')) {
+        if ($user->canDo('block.block.archive')) {
             return true;
         }
 
@@ -91,13 +91,13 @@ trait BlockWorkflow
     /**
      * Determine if the given user can approve the given block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function unarchive(UserPolicyInterface $authUser, Block $block)
+    public function unarchive(Authenticatable $user, Block $block)
     {
-        if ($authUser->canDo('block.block.unarchive')) {
+        if ($user->canDo('block.block.unarchive')) {
             return true;
         }
 
@@ -107,13 +107,13 @@ trait BlockWorkflow
     /**
      * Determine if the given user can approve the given block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function reject(UserPolicyInterface $authUser, Block $block)
+    public function reject(Authenticatable $user, Block $block)
     {
-        if ($authUser->canDo('block.block.reject')) {
+        if ($user->canDo('block.block.reject')) {
             return true;
         }
 

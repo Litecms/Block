@@ -11,12 +11,6 @@ Route::prefix('{guard}/block')->group(function () {
 
 // Guard routes for category
 Route::prefix('{guard}/block')->group(function () {
-
     Route::resource('category', 'CategoryResourceController');
 });
 
-
-
-// Public routes for block
-Route::get('blocks/', 'BlockPublicController@index');
-Route::get('block/{slug?}', 'BlockPublicController@show');

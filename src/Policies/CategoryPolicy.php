@@ -2,7 +2,7 @@
 
 namespace Litecms\Block\Policies;
 
-use Litepie\User\Interfaces\UserPolicyInterface;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Litecms\Block\Models\Category;
 
 class CategoryPolicy
@@ -12,14 +12,14 @@ class CategoryPolicy
     /**
      * Determine if the given user can view the category.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      * @param Category $category
      *
      * @return bool
      */
-    public function view(UserPolicyInterface $authUser, Category $category)
+    public function view(Authenticatable $user, Category $category)
     {
-        if ($authUser->canDo('block.category.view') && $authUser->isAdmin()) {
+        if ($user->canDo('block.category.view') && $user->isAdmin()) {
             return true;
         }
 
@@ -29,26 +29,26 @@ class CategoryPolicy
     /**
      * Determine if the given user can create a category.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function create(UserPolicyInterface $authUser)
+    public function create(Authenticatable $user)
     {
-        return  $authUser->canDo('block.category.create');
+        return  $user->canDo('block.category.create');
     }
 
     /**
      * Determine if the given user can update the given category.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      * @param Category $category
      *
      * @return bool
      */
-    public function update(UserPolicyInterface $authUser, Category $category)
+    public function update(Authenticatable $user, Category $category)
     {
-        if ($authUser->canDo('block.category.edit') && $authUser->isAdmin()) {
+        if ($user->canDo('block.category.edit') && $user->isAdmin()) {
             return true;
         }
 
@@ -58,11 +58,11 @@ class CategoryPolicy
     /**
      * Determine if the given user can delete the given category.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function destroy(UserPolicyInterface $authUser, Category $category)
+    public function destroy(Authenticatable $user, Category $category)
     {
         return $category->user_id == user_id() && $category->user_type == user_type();
     }
@@ -70,13 +70,13 @@ class CategoryPolicy
     /**
      * Determine if the given user can verify the given category.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function verify(UserPolicyInterface $authUser, Category $category)
+    public function verify(Authenticatable $user, Category $category)
     {
-        if ($authUser->canDo('block.category.verify')) {
+        if ($user->canDo('block.category.verify')) {
             return true;
         }
 
@@ -86,13 +86,13 @@ class CategoryPolicy
     /**
      * Determine if the given user can approve the given category.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function approve(UserPolicyInterface $authUser, Category $category)
+    public function approve(Authenticatable $user, Category $category)
     {
-        if ($authUser->canDo('block.category.approve')) {
+        if ($user->canDo('block.category.approve')) {
             return true;
         }
 
@@ -102,14 +102,14 @@ class CategoryPolicy
     /**
      * Determine if the user can perform a given action ve.
      *
-     * @param [type] $authUser    [description]
+     * @param [type] $user    [description]
      * @param [type] $ability [description]
      *
      * @return [type] [description]
      */
-    public function before($authUser, $ability)
+    public function before($user, $ability)
     {
-        if ($authUser->isSuperuser()) {
+        if ($user->isSuperuser()) {
             return true;
         }
     }

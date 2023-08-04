@@ -2,7 +2,7 @@
 
 namespace Litecms\Block\Policies;
 
-use Litepie\User\Interfaces\UserPolicyInterface;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Litecms\Block\Models\Block;
 
 class BlockPolicy
@@ -13,14 +13,14 @@ class BlockPolicy
     /**
      * Determine if the given user can view the block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      * @param Block $block
      *
      * @return bool
      */
-    public function view(UserPolicyInterface $authUser, Block $block)
+    public function view(Authenticatable $user, Block $block)
     {
-        if ($authUser->canDo('block.block.view') && $authUser->isAdmin()) {
+        if ($user->canDo('block.block.view') && $user->isAdmin()) {
             return true;
         }
 
@@ -30,26 +30,26 @@ class BlockPolicy
     /**
      * Determine if the given user can create a block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function create(UserPolicyInterface $authUser)
+    public function create(Authenticatable $user)
     {
-        return  $authUser->canDo('block.block.create');
+        return  $user->canDo('block.block.create');
     }
 
     /**
      * Determine if the given user can update the given block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      * @param Block $block
      *
      * @return bool
      */
-    public function update(UserPolicyInterface $authUser, Block $block)
+    public function update(Authenticatable $user, Block $block)
     {
-        if ($authUser->canDo('block.block.edit') && $authUser->isAdmin()) {
+        if ($user->canDo('block.block.edit') && $user->isAdmin()) {
             return true;
         }
 
@@ -59,11 +59,11 @@ class BlockPolicy
     /**
      * Determine if the given user can delete the given block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function destroy(UserPolicyInterface $authUser, Block $block)
+    public function destroy(Authenticatable $user, Block $block)
     {
         return $block->user_id == user_id() && $block->user_type == user_type();
     }
@@ -71,13 +71,13 @@ class BlockPolicy
     /**
      * Determine if the given user can verify the given block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function verify(UserPolicyInterface $authUser, Block $block)
+    public function verify(Authenticatable $user, Block $block)
     {
-        if ($authUser->canDo('block.block.verify')) {
+        if ($user->canDo('block.block.verify')) {
             return true;
         }
 
@@ -87,13 +87,13 @@ class BlockPolicy
     /**
      * Determine if the given user can approve the given block.
      *
-     * @param UserPolicyInterface $authUser
+     * @param Authenticatable $user
      *
      * @return bool
      */
-    public function approve(UserPolicyInterface $authUser, Block $block)
+    public function approve(Authenticatable $user, Block $block)
     {
-        if ($authUser->canDo('block.block.approve')) {
+        if ($user->canDo('block.block.approve')) {
             return true;
         }
 
@@ -103,14 +103,14 @@ class BlockPolicy
     /**
      * Determine if the user can perform a given action ve.
      *
-     * @param [type] $authUser    [description]
+     * @param [type] $user    [description]
      * @param [type] $ability [description]
      *
      * @return [type] [description]
      */
-    public function before($authUser, $ability)
+    public function before($user, $ability)
     {
-        if ($authUser->isSuperuser()) {
+        if ($user->isSuperuser()) {
             return true;
         }
     }
